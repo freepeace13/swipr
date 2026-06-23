@@ -5,16 +5,17 @@ namespace App\Models;
 use App\Enums\Gender;
 use App\Enums\InterestedIn;
 use App\Enums\LookingFor;
-use App\Casts\AsAvatar;
-use Closure;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Laravolt\Avatar\Facade as AvatarFacade;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -45,7 +46,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'avatar' => AsAvatar::class,
             'gender' => Gender::class,
             'looking_for' => LookingFor::class,
             'interested_in' => InterestedIn::class,
@@ -55,14 +55,20 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    public function getAgeAttribute(): int
+    protected function avatar(): Attribute
     {
-        return $this->birthdate->age;
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => $value
+                ? Storage::disk('public')->url($value)
+                : 'data:image/svg+xml;base64,' . base64_encode(AvatarFacade::create($attributes['name'])->toSvg())
+        );
     }
 
-    public function getAgeOnDateAttribute(): Closure
+    protected function age(): Attribute
     {
-        return fn(Carbon $date) => $this->birthdate->diffInYears($date);
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => Carbon::parse($attributes['birthdate'])->age
+        );
     }
 
     public function interestIds(): array

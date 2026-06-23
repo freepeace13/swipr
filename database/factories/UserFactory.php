@@ -9,7 +9,6 @@ use App\Models\Interest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -38,19 +37,6 @@ class UserFactory extends Factory
             'flexible_on_age' => fake()->boolean(),
             'last_seen_at' => fake()->optional(0.7)->dateTimeBetween('-7 days'),
         ];
-    }
-
-    public function withAvatar(): static
-    {
-        return $this->afterCreating(function (User $user) {
-            $name = urlencode($user->name);
-            $contents = file_get_contents("https://ui-avatars.com/api/?name={$name}&size=256&background=random&format=png");
-
-            $path = "avatars/{$user->id}.png";
-            Storage::disk('public')->put($path, $contents);
-
-            $user->updateQuietly(['avatar' => $path]);
-        });
     }
 
     public function withRandomInterests(int $min = 3, int $max = 8): static

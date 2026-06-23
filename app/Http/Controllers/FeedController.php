@@ -11,8 +11,7 @@ class FeedController extends Controller
     {
         $user = $request->user()->load('interests');
 
-        return view('feeds', [
-            'user' => $user,
+        return view('pages.feeds', [
             'matches' => $matchmaking->get($user),
         ]);
     }

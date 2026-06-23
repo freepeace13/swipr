@@ -11,15 +11,18 @@
                 @auth
                     <div class="relative" @click.away="userMenu = false">
                         <button @click="userMenu = !userMenu" class="flex items-center gap-1 text-sm text-gray-700 hover:text-gray-900">
-                            {{ $user->name }}
+                            {{ $auth->name }}
                             <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>
                         </button>
 
+
+
                         <div x-show="userMenu" x-transition class="absolute right-0 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5" style="display: none;">
-                            <a href="{{ route('profile', ['user' => $user]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile Info</a>
+                            <a href="{{ route('profile', ['user' => $auth]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile Info</a>
                             <a href="{{ route('settings') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account Settings</a>
+                            <a href="{{ route('chat.inbox') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Inbox</a>
                             <hr class="my-1 border-gray-200">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -51,8 +54,8 @@
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1 px-4">
             @auth
-                <p class="text-sm font-medium text-gray-700">{{ $user->name }}</p>
-                <a href="{{ route('profile', $user) }}" class="block py-1 text-sm text-gray-600 hover:text-gray-900">Profile Info</a>
+                <p class="text-sm font-medium text-gray-700">{{ $auth->name }}</p>
+                <a href="{{ route('profile', ['user' => $auth]) }}" class="block py-1 text-sm text-gray-600 hover:text-gray-900">Profile Info</a>
                 <a href="{{ route('settings') }}" class="block py-1 text-sm text-gray-600 hover:text-gray-900">Account Settings</a>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf

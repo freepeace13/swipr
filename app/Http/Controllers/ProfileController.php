@@ -10,6 +10,8 @@ class ProfileController extends Controller
     {
         $user->load('interests.category');
 
-        return view('profile', compact('user'));
+        return view('pages.profile', [
+            'user' => $user
+        ]);
     }
 }
