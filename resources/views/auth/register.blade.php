@@ -25,6 +25,32 @@
         </div>
 
         <div class="mt-4">
+            <label for="birthdate" class="block text-sm font-medium text-gray-700">Date of Birth</label>
+            <input id="birthdate" type="date" name="birthdate" value="{{ old('birthdate') }}" required
+                   max="{{ now()->subYears(18)->toDateString() }}"
+                   class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+            @error('birthdate')
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="mt-4">
+            <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
+            <select id="gender" name="gender" required
+                    class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                <option value="">Select gender</option>
+                @foreach(\App\Enums\Gender::toSelectOptions() as $option)
+                    <option value="{{ $option['value'] }}" @selected(old('gender') === $option['value'])>
+                        {{ $option['label'] }}
+                    </option>
+                @endforeach
+            </select>
+            @error('gender')
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="mt-4">
             <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
             <input id="password" type="password" name="password" required
                    class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">

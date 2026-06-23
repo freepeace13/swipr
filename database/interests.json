@@ -1,0 +1,952 @@
+{
+    "version": "1.0",
+    "categories": [
+        {
+            "id": "music",
+            "label": "Music",
+            "interests": [
+                {
+                    "id": "music_pop",
+                    "label": "Pop"
+                },
+                {
+                    "id": "music_rock",
+                    "label": "Rock"
+                },
+                {
+                    "id": "music_hiphop",
+                    "label": "Hip-hop"
+                },
+                {
+                    "id": "music_rnb",
+                    "label": "R&B"
+                },
+                {
+                    "id": "music_jazz",
+                    "label": "Jazz"
+                },
+                {
+                    "id": "music_classical",
+                    "label": "Classical"
+                },
+                {
+                    "id": "music_electronic",
+                    "label": "Electronic / EDM"
+                },
+                {
+                    "id": "music_indie",
+                    "label": "Indie"
+                },
+                {
+                    "id": "music_kpop",
+                    "label": "K-pop"
+                },
+                {
+                    "id": "music_metal",
+                    "label": "Metal"
+                },
+                {
+                    "id": "music_country",
+                    "label": "Country"
+                },
+                {
+                    "id": "music_reggae",
+                    "label": "Reggae"
+                },
+                {
+                    "id": "music_folk",
+                    "label": "Folk"
+                },
+                {
+                    "id": "music_latin",
+                    "label": "Latin"
+                },
+                {
+                    "id": "music_gospel",
+                    "label": "Gospel"
+                },
+                {
+                    "id": "music_lofi",
+                    "label": "Lo-fi"
+                },
+                {
+                    "id": "music_live_concerts",
+                    "label": "Live concerts"
+                },
+                {
+                    "id": "music_festivals",
+                    "label": "Music festivals"
+                },
+                {
+                    "id": "music_playing_instrument",
+                    "label": "Playing an instrument"
+                },
+                {
+                    "id": "music_singing",
+                    "label": "Singing / karaoke"
+                },
+                {
+                    "id": "music_dj",
+                    "label": "DJing"
+                },
+                {
+                    "id": "music_vinyl",
+                    "label": "Vinyl collecting"
+                }
+            ]
+        },
+        {
+            "id": "food_drink",
+            "label": "Food & Drink",
+            "interests": [
+                {
+                    "id": "food_cooking",
+                    "label": "Cooking at home"
+                },
+                {
+                    "id": "food_baking",
+                    "label": "Baking"
+                },
+                {
+                    "id": "food_grilling",
+                    "label": "Grilling & BBQ"
+                },
+                {
+                    "id": "food_fine_dining",
+                    "label": "Fine dining"
+                },
+                {
+                    "id": "food_street_food",
+                    "label": "Street food"
+                },
+                {
+                    "id": "food_food_trucks",
+                    "label": "Food trucks"
+                },
+                {
+                    "id": "food_brunch",
+                    "label": "Brunch"
+                },
+                {
+                    "id": "food_vegan",
+                    "label": "Vegan / plant-based"
+                },
+                {
+                    "id": "food_sushi",
+                    "label": "Sushi"
+                },
+                {
+                    "id": "food_pizza",
+                    "label": "Pizza"
+                },
+                {
+                    "id": "food_ramen",
+                    "label": "Ramen"
+                },
+                {
+                    "id": "food_tacos",
+                    "label": "Tacos"
+                },
+                {
+                    "id": "food_desserts",
+                    "label": "Desserts & sweets"
+                },
+                {
+                    "id": "food_coffee",
+                    "label": "Coffee culture"
+                },
+                {
+                    "id": "food_tea",
+                    "label": "Tea"
+                },
+                {
+                    "id": "food_craft_beer",
+                    "label": "Craft beer"
+                },
+                {
+                    "id": "food_wine",
+                    "label": "Wine"
+                },
+                {
+                    "id": "food_cocktails",
+                    "label": "Cocktails & mixology"
+                },
+                {
+                    "id": "food_food_photography",
+                    "label": "Food photography"
+                },
+                {
+                    "id": "food_farmers_market",
+                    "label": "Farmers markets"
+                },
+                {
+                    "id": "food_meal_prep",
+                    "label": "Meal prepping"
+                },
+                {
+                    "id": "food_trying_new_restaurants",
+                    "label": "Trying new restaurants"
+                }
+            ]
+        },
+        {
+            "id": "travel",
+            "label": "Travel & Adventure",
+            "interests": [
+                {
+                    "id": "travel_backpacking",
+                    "label": "Backpacking"
+                },
+                {
+                    "id": "travel_solo",
+                    "label": "Solo travel"
+                },
+                {
+                    "id": "travel_road_trips",
+                    "label": "Road trips"
+                },
+                {
+                    "id": "travel_beach",
+                    "label": "Beach getaways"
+                },
+                {
+                    "id": "travel_mountains",
+                    "label": "Mountain trips"
+                },
+                {
+                    "id": "travel_camping",
+                    "label": "Camping"
+                },
+                {
+                    "id": "travel_glamping",
+                    "label": "Glamping"
+                },
+                {
+                    "id": "travel_city_breaks",
+                    "label": "City breaks"
+                },
+                {
+                    "id": "travel_cultural",
+                    "label": "Cultural travel"
+                },
+                {
+                    "id": "travel_luxury",
+                    "label": "Luxury travel"
+                },
+                {
+                    "id": "travel_cruises",
+                    "label": "Cruises"
+                },
+                {
+                    "id": "travel_van_life",
+                    "label": "Van life"
+                },
+                {
+                    "id": "travel_photography",
+                    "label": "Travel photography"
+                },
+                {
+                    "id": "travel_foodie_trips",
+                    "label": "Foodie trips"
+                },
+                {
+                    "id": "travel_adventure_sports",
+                    "label": "Adventure sports travel"
+                },
+                {
+                    "id": "travel_local_exploration",
+                    "label": "Exploring locally"
+                },
+                {
+                    "id": "travel_passport_stamps",
+                    "label": "Collecting passport stamps"
+                }
+            ]
+        },
+        {
+            "id": "fitness",
+            "label": "Fitness & Sports",
+            "interests": [
+                {
+                    "id": "fitness_gym",
+                    "label": "Gym / weightlifting"
+                },
+                {
+                    "id": "fitness_running",
+                    "label": "Running"
+                },
+                {
+                    "id": "fitness_cycling",
+                    "label": "Cycling"
+                },
+                {
+                    "id": "fitness_swimming",
+                    "label": "Swimming"
+                },
+                {
+                    "id": "fitness_yoga",
+                    "label": "Yoga"
+                },
+                {
+                    "id": "fitness_pilates",
+                    "label": "Pilates"
+                },
+                {
+                    "id": "fitness_crossfit",
+                    "label": "CrossFit"
+                },
+                {
+                    "id": "fitness_martial_arts",
+                    "label": "Martial arts"
+                },
+                {
+                    "id": "fitness_boxing",
+                    "label": "Boxing"
+                },
+                {
+                    "id": "fitness_hiking",
+                    "label": "Hiking"
+                },
+                {
+                    "id": "fitness_rock_climbing",
+                    "label": "Rock climbing"
+                },
+                {
+                    "id": "fitness_basketball",
+                    "label": "Basketball"
+                },
+                {
+                    "id": "fitness_football",
+                    "label": "Football / soccer"
+                },
+                {
+                    "id": "fitness_tennis",
+                    "label": "Tennis"
+                },
+                {
+                    "id": "fitness_volleyball",
+                    "label": "Volleyball"
+                },
+                {
+                    "id": "fitness_golf",
+                    "label": "Golf"
+                },
+                {
+                    "id": "fitness_skiing",
+                    "label": "Skiing / snowboarding"
+                },
+                {
+                    "id": "fitness_surfing",
+                    "label": "Surfing"
+                },
+                {
+                    "id": "fitness_dance_fitness",
+                    "label": "Dance fitness / Zumba"
+                },
+                {
+                    "id": "fitness_team_sports",
+                    "label": "Team sports"
+                },
+                {
+                    "id": "fitness_esports_watching",
+                    "label": "Watching sports"
+                },
+                {
+                    "id": "fitness_calisthenics",
+                    "label": "Calisthenics"
+                }
+            ]
+        },
+        {
+            "id": "arts_creativity",
+            "label": "Arts & Creativity",
+            "interests": [
+                {
+                    "id": "arts_painting",
+                    "label": "Painting"
+                },
+                {
+                    "id": "arts_drawing",
+                    "label": "Drawing / sketching"
+                },
+                {
+                    "id": "arts_photography",
+                    "label": "Photography"
+                },
+                {
+                    "id": "arts_filmmaking",
+                    "label": "Filmmaking / videography"
+                },
+                {
+                    "id": "arts_graphic_design",
+                    "label": "Graphic design"
+                },
+                {
+                    "id": "arts_digital_art",
+                    "label": "Digital art"
+                },
+                {
+                    "id": "arts_sculpture",
+                    "label": "Sculpture / ceramics"
+                },
+                {
+                    "id": "arts_writing",
+                    "label": "Creative writing"
+                },
+                {
+                    "id": "arts_poetry",
+                    "label": "Poetry"
+                },
+                {
+                    "id": "arts_calligraphy",
+                    "label": "Calligraphy"
+                },
+                {
+                    "id": "arts_knitting",
+                    "label": "Knitting / crochet"
+                },
+                {
+                    "id": "arts_sewing",
+                    "label": "Sewing / fashion design"
+                },
+                {
+                    "id": "arts_embroidery",
+                    "label": "Embroidery"
+                },
+                {
+                    "id": "arts_jewelry_making",
+                    "label": "Jewelry making"
+                },
+                {
+                    "id": "arts_theater",
+                    "label": "Theater / acting"
+                },
+                {
+                    "id": "arts_comedy",
+                    "label": "Stand-up comedy"
+                },
+                {
+                    "id": "arts_dance",
+                    "label": "Dancing"
+                },
+                {
+                    "id": "arts_upcycling",
+                    "label": "Upcycling / DIY crafts"
+                },
+                {
+                    "id": "arts_animation",
+                    "label": "Animation"
+                },
+                {
+                    "id": "arts_tattoo",
+                    "label": "Tattoo art"
+                }
+            ]
+        },
+        {
+            "id": "entertainment",
+            "label": "Entertainment & Media",
+            "interests": [
+                {
+                    "id": "ent_movies",
+                    "label": "Movies"
+                },
+                {
+                    "id": "ent_tv_shows",
+                    "label": "TV shows / binge-watching"
+                },
+                {
+                    "id": "ent_anime",
+                    "label": "Anime"
+                },
+                {
+                    "id": "ent_documentaries",
+                    "label": "Documentaries"
+                },
+                {
+                    "id": "ent_horror",
+                    "label": "Horror films"
+                },
+                {
+                    "id": "ent_comedy_shows",
+                    "label": "Comedy shows"
+                },
+                {
+                    "id": "ent_true_crime",
+                    "label": "True crime"
+                },
+                {
+                    "id": "ent_podcasts",
+                    "label": "Podcasts"
+                },
+                {
+                    "id": "ent_audiobooks",
+                    "label": "Audiobooks"
+                },
+                {
+                    "id": "ent_reading",
+                    "label": "Reading"
+                },
+                {
+                    "id": "ent_comics",
+                    "label": "Comics / manga"
+                },
+                {
+                    "id": "ent_gaming_video",
+                    "label": "Video games"
+                },
+                {
+                    "id": "ent_gaming_board",
+                    "label": "Board games"
+                },
+                {
+                    "id": "ent_gaming_card",
+                    "label": "Card games / poker"
+                },
+                {
+                    "id": "ent_escape_rooms",
+                    "label": "Escape rooms"
+                },
+                {
+                    "id": "ent_trivia",
+                    "label": "Pub quizzes / trivia"
+                },
+                {
+                    "id": "ent_stand_up",
+                    "label": "Stand-up comedy shows"
+                },
+                {
+                    "id": "ent_musicals",
+                    "label": "Musicals / theater"
+                },
+                {
+                    "id": "ent_opera",
+                    "label": "Opera / ballet"
+                },
+                {
+                    "id": "ent_art_exhibitions",
+                    "label": "Art galleries & museums"
+                }
+            ]
+        },
+        {
+            "id": "mindfulness",
+            "label": "Mindfulness & Wellness",
+            "interests": [
+                {
+                    "id": "mind_meditation",
+                    "label": "Meditation"
+                },
+                {
+                    "id": "mind_journaling",
+                    "label": "Journaling"
+                },
+                {
+                    "id": "mind_therapy",
+                    "label": "Therapy / self-growth"
+                },
+                {
+                    "id": "mind_breathwork",
+                    "label": "Breathwork"
+                },
+                {
+                    "id": "mind_spirituality",
+                    "label": "Spirituality"
+                },
+                {
+                    "id": "mind_astrology",
+                    "label": "Astrology"
+                },
+                {
+                    "id": "mind_tarot",
+                    "label": "Tarot / oracle cards"
+                },
+                {
+                    "id": "mind_crystals",
+                    "label": "Crystals & energy work"
+                },
+                {
+                    "id": "mind_nature_walks",
+                    "label": "Nature walks"
+                },
+                {
+                    "id": "mind_cold_plunge",
+                    "label": "Cold plunge / sauna"
+                },
+                {
+                    "id": "mind_sleep_optimization",
+                    "label": "Sleep optimization"
+                },
+                {
+                    "id": "mind_nutrition",
+                    "label": "Nutrition & wellness"
+                },
+                {
+                    "id": "mind_minimalism",
+                    "label": "Minimalism"
+                },
+                {
+                    "id": "mind_gratitude",
+                    "label": "Gratitude practice"
+                },
+                {
+                    "id": "mind_mental_health",
+                    "label": "Mental health advocacy"
+                }
+            ]
+        },
+        {
+            "id": "outdoors",
+            "label": "Outdoors & Nature",
+            "interests": [
+                {
+                    "id": "out_hiking",
+                    "label": "Hiking & trekking"
+                },
+                {
+                    "id": "out_gardening",
+                    "label": "Gardening"
+                },
+                {
+                    "id": "out_birdwatching",
+                    "label": "Birdwatching"
+                },
+                {
+                    "id": "out_stargazing",
+                    "label": "Stargazing"
+                },
+                {
+                    "id": "out_fishing",
+                    "label": "Fishing"
+                },
+                {
+                    "id": "out_hunting",
+                    "label": "Hunting"
+                },
+                {
+                    "id": "out_kayaking",
+                    "label": "Kayaking / canoeing"
+                },
+                {
+                    "id": "out_scuba_diving",
+                    "label": "Scuba diving / snorkeling"
+                },
+                {
+                    "id": "out_horseback_riding",
+                    "label": "Horseback riding"
+                },
+                {
+                    "id": "out_foraging",
+                    "label": "Foraging"
+                },
+                {
+                    "id": "out_urban_exploring",
+                    "label": "Urban exploring"
+                },
+                {
+                    "id": "out_skydiving",
+                    "label": "Skydiving"
+                },
+                {
+                    "id": "out_paragliding",
+                    "label": "Paragliding"
+                },
+                {
+                    "id": "out_photography_nature",
+                    "label": "Nature photography"
+                },
+                {
+                    "id": "out_sustainability",
+                    "label": "Sustainability & eco living"
+                },
+                {
+                    "id": "out_animal_care",
+                    "label": "Animal care / pets"
+                }
+            ]
+        },
+        {
+            "id": "tech_science",
+            "label": "Tech & Science",
+            "interests": [
+                {
+                    "id": "tech_coding",
+                    "label": "Coding / programming"
+                },
+                {
+                    "id": "tech_ai",
+                    "label": "Artificial intelligence"
+                },
+                {
+                    "id": "tech_gadgets",
+                    "label": "Gadgets & tech"
+                },
+                {
+                    "id": "tech_gaming_pc",
+                    "label": "PC gaming / building rigs"
+                },
+                {
+                    "id": "tech_crypto",
+                    "label": "Crypto & blockchain"
+                },
+                {
+                    "id": "tech_space",
+                    "label": "Space & astronomy"
+                },
+                {
+                    "id": "tech_science_general",
+                    "label": "Science in general"
+                },
+                {
+                    "id": "tech_robotics",
+                    "label": "Robotics"
+                },
+                {
+                    "id": "tech_3d_printing",
+                    "label": "3D printing"
+                },
+                {
+                    "id": "tech_drones",
+                    "label": "Drones"
+                },
+                {
+                    "id": "tech_vr",
+                    "label": "VR / AR"
+                },
+                {
+                    "id": "tech_biohacking",
+                    "label": "Biohacking"
+                },
+                {
+                    "id": "tech_science_podcasts",
+                    "label": "Science podcasts"
+                },
+                {
+                    "id": "tech_environment",
+                    "label": "Environmental science"
+                }
+            ]
+        },
+        {
+            "id": "social_lifestyle",
+            "label": "Social & Lifestyle",
+            "interests": [
+                {
+                    "id": "social_nightlife",
+                    "label": "Nightlife & clubbing"
+                },
+                {
+                    "id": "social_bar_hopping",
+                    "label": "Bar hopping"
+                },
+                {
+                    "id": "social_house_parties",
+                    "label": "House parties"
+                },
+                {
+                    "id": "social_dinner_parties",
+                    "label": "Dinner parties"
+                },
+                {
+                    "id": "social_game_nights",
+                    "label": "Game nights"
+                },
+                {
+                    "id": "social_volunteering",
+                    "label": "Volunteering"
+                },
+                {
+                    "id": "social_activism",
+                    "label": "Social activism"
+                },
+                {
+                    "id": "social_networking",
+                    "label": "Networking events"
+                },
+                {
+                    "id": "social_book_clubs",
+                    "label": "Book clubs"
+                },
+                {
+                    "id": "social_comedy_nights",
+                    "label": "Comedy nights"
+                },
+                {
+                    "id": "social_farmers_market",
+                    "label": "Farmers markets"
+                },
+                {
+                    "id": "social_flea_markets",
+                    "label": "Flea markets & thrifting"
+                },
+                {
+                    "id": "social_fashion",
+                    "label": "Fashion & style"
+                },
+                {
+                    "id": "social_luxury_lifestyle",
+                    "label": "Luxury lifestyle"
+                },
+                {
+                    "id": "social_minimalist",
+                    "label": "Simple / minimalist living"
+                },
+                {
+                    "id": "social_expat_life",
+                    "label": "Expat life"
+                },
+                {
+                    "id": "social_family_oriented",
+                    "label": "Family-oriented"
+                },
+                {
+                    "id": "social_pet_owner",
+                    "label": "Pet owner"
+                },
+                {
+                    "id": "social_dog_person",
+                    "label": "Dog person"
+                },
+                {
+                    "id": "social_cat_person",
+                    "label": "Cat person"
+                }
+            ]
+        },
+        {
+            "id": "learning",
+            "label": "Learning & Personal Growth",
+            "interests": [
+                {
+                    "id": "learn_languages",
+                    "label": "Learning languages"
+                },
+                {
+                    "id": "learn_history",
+                    "label": "History"
+                },
+                {
+                    "id": "learn_philosophy",
+                    "label": "Philosophy"
+                },
+                {
+                    "id": "learn_psychology",
+                    "label": "Psychology"
+                },
+                {
+                    "id": "learn_economics",
+                    "label": "Economics"
+                },
+                {
+                    "id": "learn_politics",
+                    "label": "Politics & current affairs"
+                },
+                {
+                    "id": "learn_self_help",
+                    "label": "Self-help books"
+                },
+                {
+                    "id": "learn_entrepreneurship",
+                    "label": "Entrepreneurship"
+                },
+                {
+                    "id": "learn_finance",
+                    "label": "Personal finance & investing"
+                },
+                {
+                    "id": "learn_online_courses",
+                    "label": "Online courses / MOOCs"
+                },
+                {
+                    "id": "learn_ted_talks",
+                    "label": "TED talks"
+                },
+                {
+                    "id": "learn_debating",
+                    "label": "Debating & public speaking"
+                },
+                {
+                    "id": "learn_chess",
+                    "label": "Chess"
+                },
+                {
+                    "id": "learn_puzzles",
+                    "label": "Puzzles & brain teasers"
+                }
+            ]
+        },
+        {
+            "id": "hobbies_collecting",
+            "label": "Hobbies & Collecting",
+            "interests": [
+                {
+                    "id": "hobby_cars",
+                    "label": "Cars & automotive"
+                },
+                {
+                    "id": "hobby_motorcycles",
+                    "label": "Motorcycles"
+                },
+                {
+                    "id": "hobby_sneakers",
+                    "label": "Sneaker collecting"
+                },
+                {
+                    "id": "hobby_vintage_fashion",
+                    "label": "Vintage fashion"
+                },
+                {
+                    "id": "hobby_thrifting",
+                    "label": "Thrifting"
+                },
+                {
+                    "id": "hobby_antiques",
+                    "label": "Antiques"
+                },
+                {
+                    "id": "hobby_stamps_coins",
+                    "label": "Stamps / coins"
+                },
+                {
+                    "id": "hobby_lego",
+                    "label": "LEGO"
+                },
+                {
+                    "id": "hobby_action_figures",
+                    "label": "Action figures / collectibles"
+                },
+                {
+                    "id": "hobby_cosplay",
+                    "label": "Cosplay"
+                },
+                {
+                    "id": "hobby_woodworking",
+                    "label": "Woodworking"
+                },
+                {
+                    "id": "hobby_home_diy",
+                    "label": "Home DIY & renovation"
+                },
+                {
+                    "id": "hobby_model_building",
+                    "label": "Model building"
+                },
+                {
+                    "id": "hobby_magic_tricks",
+                    "label": "Magic tricks"
+                },
+                {
+                    "id": "hobby_urban_gardening",
+                    "label": "Urban gardening"
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "total_categories": 12,
+        "total_interests": 204,
+        "recommended_max_per_user": 10,
+        "recommended_min_per_user": 3,
+        "notes": "Interests are flat within each category. Store selected interest IDs in a pivot table (user_interests). Use category grouping only for display purposes."
+    }
+}

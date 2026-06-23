@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
+
+class MatchMakingService
+{
+    public function get(User $user, int $limit = 20): Collection
+    {
+        return User::query()
+            ->where('users.id', '!=', $user->id)
+            ->matchesByGender($user)
+            ->matchesByAge($user)
+            ->rankedByInterestMatch($user)
+            ->with('interests')
+            ->limit($limit)
+            ->get();
+    }
+}

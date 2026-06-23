@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\FeedController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -7,7 +10,7 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', fn () => view('dashboard'))->name('dashboard');
-    Route::get('/profile', fn () => view('profile'))->name('profile');
-    Route::get('/settings', fn () => view('settings'))->name('settings');
+    Route::get('/feeds', FeedController::class)->name('feeds');
+    Route::get('/profile/{user}', ProfileController::class)->name('profile');
+    Route::get('/settings', SettingController::class)->name('settings');
 });
