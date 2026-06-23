@@ -17,7 +17,7 @@
             @else
                 <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     @foreach($matches as $match)
-                        <a href="{{ route('profile', $match) }}" class="group block overflow-hidden rounded-2xl bg-white shadow transition hover:shadow-lg">
+                        <a href="{{ route('profile.show', $match) }}" class="group block overflow-hidden rounded-2xl bg-white shadow transition hover:shadow-lg">
                             <div class="relative">
                                 <img
                                     src="{{ $match->avatar }}"
