@@ -2,60 +2,152 @@
 
 @section('title', 'Discover')
 
+@section('bodyClass', 'overflow-hidden')
+@section('mainClass', 'overflow-hidden')
+
+@push('styles')
+<style>
+    :root {
+        --nav-h: 4rem;
+        --feed-h: calc(100dvh - var(--nav-h));
+    }
+    .feed-scroll {
+        height: var(--feed-h);
+        scroll-snap-type: y mandatory;
+        overflow-y: auto;
+        overscroll-behavior-y: contain;
+        scrollbar-width: none;
+        cursor: grab;
+    }
+    .feed-scroll.dragging {
+        cursor: grabbing;
+        scroll-snap-type: none;
+        user-select: none;
+    }
+    .feed-scroll::-webkit-scrollbar {
+        display: none;
+    }
+    .feed-panel {
+        height: var(--feed-h);
+        scroll-snap-align: start;
+    }
+</style>
+@endpush
+
 @section('content')
-    <div class="py-8">
-        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-
-            @if($matches->isEmpty())
-                <div class="rounded-2xl bg-white p-12 text-center shadow">
-                    <svg class="mx-auto h-12 w-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
-                    </svg>
-                    <h3 class="mt-4 text-lg font-semibold text-gray-900">No matches yet</h3>
-                    <p class="mt-1 text-sm text-gray-500">Try broadening your preferences to discover more people.</p>
-                </div>
-            @else
-                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    @foreach($matches as $match)
-                        <a href="{{ route('profile.show', $match) }}" class="group block overflow-hidden rounded-2xl bg-white shadow transition hover:shadow-lg">
-                            <div class="relative">
-                                <img
-                                    src="{{ $match->avatar }}"
-                                    alt="{{ $match->name }}"
-                                    class="aspect-[3/4] w-full object-cover transition group-hover:scale-105"
-                                >
-                                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent px-4 pb-4 pt-16">
-                                    <h3 class="text-lg font-bold text-white">
-                                        {{ $match->name }}<span class="ml-1 font-normal">, {{ $match->age }}</span>
-                                    </h3>
-                                    @if($match->looking_for)
-                                        <p class="mt-0.5 text-sm text-white/80">{{ $match->looking_for->label() }}</p>
-                                    @endif
-                                </div>
-                            </div>
-
-                            @if($match->interests->isNotEmpty())
-                                <div class="flex flex-wrap gap-1.5 px-4 py-3">
-                                    @foreach($match->interests->take(4) as $interest)
-                                        <span class="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">
-                                            @if($interest->icon)
-                                                <span>{{ $interest->icon }}</span>
-                                            @endif
-                                            {{ $interest->label }}
-                                        </span>
-                                    @endforeach
-                                    @if($match->interests->count() > 4)
-                                        <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500">
-                                            +{{ $match->interests->count() - 4 }}
-                                        </span>
-                                    @endif
-                                </div>
-                            @endif
-                        </a>
-                    @endforeach
-                </div>
-            @endif
-
+    @if($matches->isEmpty())
+        <div class="flex items-center justify-center" style="height: var(--feed-h)">
+            <div class="rounded-2xl bg-white p-12 text-center shadow">
+                <svg class="mx-auto h-12 w-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
+                </svg>
+                <h3 class="mt-4 text-lg font-semibold text-gray-900">No matches yet</h3>
+                <p class="mt-1 text-sm text-gray-500">Try broadening your preferences to discover more people.</p>
+            </div>
         </div>
-    </div>
+    @else
+        <div
+            class="relative"
+            x-data="{
+                current: 0,
+                total: {{ $matches->count() }},
+                nextCursor: '{{ $matches->nextCursor()?->encode() }}',
+                loading: false,
+                done: {{ $matches->hasMorePages() ? 'false' : 'true' }},
+                dragging: false,
+                dragStartY: 0,
+                dragScrollTop: 0,
+                panelHeight() {
+                    return this.$refs.scroller?.firstElementChild?.offsetHeight || this.$refs.scroller?.offsetHeight || 1;
+                },
+                update(e) {
+                    if (this.dragging) return;
+                    const h = this.panelHeight();
+                    this.current = Math.round(e.target.scrollTop / h);
+                    if (!this.done && !this.loading && this.current >= this.total - 3) {
+                        this.loadMore();
+                    }
+                },
+                go(dir) {
+                    const el = this.$refs.scroller;
+                    el.scrollTo({ top: (this.current + dir) * this.panelHeight(), behavior: 'smooth' });
+                },
+                dragStart(e) {
+                    if (e.target.closest('a, button')) return;
+                    e.preventDefault();
+                    this.dragging = true;
+                    this.dragStartY = e.clientY;
+                    this.dragScrollTop = this.$refs.scroller.scrollTop;
+                    this.$refs.scroller.classList.add('dragging');
+                },
+                dragMove(e) {
+                    if (!this.dragging) return;
+                    const dy = this.dragStartY - e.clientY;
+                    this.$refs.scroller.scrollTop = this.dragScrollTop + dy;
+                },
+                dragEnd(e) {
+                    if (!this.dragging) return;
+                    this.dragging = false;
+                    this.$refs.scroller.classList.remove('dragging');
+                    const dy = this.dragStartY - e.clientY;
+                    const threshold = this.panelHeight() * 0.15;
+                    if (Math.abs(dy) > threshold) {
+                        this.go(dy > 0 ? 1 : -1);
+                    } else {
+                        this.go(0);
+                    }
+                    const h = this.panelHeight();
+                    this.current = Math.round(this.$refs.scroller.scrollTop / h);
+                    if (!this.done && !this.loading && this.current >= this.total - 3) {
+                        this.loadMore();
+                    }
+                },
+                async loadMore() {
+                    this.loading = true;
+                    try {
+                        const url = '{{ route('feeds') }}' + '?cursor=' + this.nextCursor;
+                        const res = await fetch(url, {
+                            headers: {
+                                'X-Feed-Page': '1',
+                                'X-Requested-With': 'XMLHttpRequest',
+                            }
+                        });
+                        const html = await res.text();
+                        const tmp = document.createElement('div');
+                        tmp.innerHTML = html;
+                        const panels = tmp.querySelectorAll('.feed-panel');
+                        panels.forEach(p => this.$refs.scroller.appendChild(p));
+                        this.total += panels.length;
+                        const meta = tmp.querySelector('meta[name=next-cursor]');
+                        if (meta) {
+                            this.nextCursor = meta.content;
+                        } else {
+                            this.done = true;
+                        }
+                    } finally {
+                        this.loading = false;
+                    }
+                }
+            }"
+            x-on:keydown.arrow-down.window.prevent="go(1)"
+            x-on:keydown.arrow-up.window.prevent="go(-1)"
+        >
+            {{-- Profile counter --}}
+            <div class="pointer-events-none absolute right-4 top-4 z-10">
+                <span class="rounded-full bg-black/40 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm" x-text="`${current + 1} / ${total}`"></span>
+            </div>
+
+            <div
+                class="feed-scroll"
+                x-ref="scroller"
+                x-on:scroll.passive="update($event)"
+                x-on:mousedown="dragStart($event)"
+                x-on:mousemove.prevent="dragMove($event)"
+                x-on:mouseup="dragEnd($event)"
+                x-on:mouseleave="dragEnd($event)"
+            >
+                @include('pages.feeds-panel')
+            </div>
+        </div>
+    @endif
 @endsection

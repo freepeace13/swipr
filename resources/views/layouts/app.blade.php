@@ -8,9 +8,10 @@
     <title>{{ config('app.name', 'Swipr') }} - @yield('title', 'Home')</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @stack('styles')
 </head>
-<body class="bg-gray-100 text-gray-900 antialiased">
-    <div class="min-h-screen">
+<body class="bg-gray-100 text-gray-900 antialiased @yield('bodyClass')">
+    <div class="flex h-dvh flex-col">
         @include('layouts.navigation')
 
         @hasSection('header')
@@ -21,7 +22,7 @@
             </header>
         @endif
 
-        <main>
+        <main class="min-h-0 flex-1 @yield('mainClass', 'overflow-auto')">
             @yield('content')
         </main>
     </div>
