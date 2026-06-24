@@ -16,7 +16,7 @@ class ConversationTest extends TestCase
     #[Test]
     public function guests_are_redirected_from_the_inbox(): void
     {
-        $this->get(route('chat.inbox'))->assertRedirect('/');
+        $this->get(route('chat.inbox'))->assertRedirect('/login');
     }
 
     #[Test]
@@ -91,7 +91,7 @@ class ConversationTest extends TestCase
 
         $this->actingAs($conversation->sender)
             ->delete(route('chat.conversations.destroy', $conversation))
-            ->assertOk();
+            ->assertRedirect(route('chat.inbox'));
 
         $this->assertNotNull($conversation->fresh()->sender_deleted_at);
         $this->assertNull($conversation->fresh()->recipient_deleted_at);

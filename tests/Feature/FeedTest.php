@@ -28,7 +28,7 @@ class FeedTest extends TestCase
     #[Test]
     public function guests_cannot_view_the_feed(): void
     {
-        $this->get(route('feeds'))->assertRedirect('/');
+        $this->get(route('feeds'))->assertRedirect('/login');
     }
 
     #[Test]
