@@ -28,11 +28,11 @@ class ReadConversationTest extends TestCase
         $conversation = Conversation::factory()->create();
         $sendMessage = new SendMessage;
 
-        $sendMessage->execute($conversation, $conversation->sender, 'Message 1');
-        $sendMessage->execute($conversation, $conversation->sender, 'Message 2');
-        $sendMessage->execute($conversation, $conversation->sender, 'Message 3');
+        $sendMessage->send($conversation->sender, $conversation, ['body' => 'Message 1']);
+        $sendMessage->send($conversation->sender, $conversation, ['body' => 'Message 2']);
+        $sendMessage->send($conversation->sender, $conversation, ['body' => 'Message 3']);
 
-        $updated = $this->action->execute($conversation, $conversation->recipient);
+        $updated = $this->action->read($conversation->recipient, $conversation);
 
         $this->assertEquals(3, $updated);
         $this->assertEquals(
@@ -45,9 +45,9 @@ class ReadConversationTest extends TestCase
     public function it_sets_delivered_at_when_marking_as_read(): void
     {
         $conversation = Conversation::factory()->create();
-        (new SendMessage)->execute($conversation, $conversation->sender, 'Hello');
+        (new SendMessage)->send($conversation->sender, $conversation, ['body' => 'Hello']);
 
-        $this->action->execute($conversation, $conversation->recipient);
+        $this->action->read($conversation->recipient, $conversation);
 
         $status = MessageStatus::where('recipient_id', $conversation->recipient_id)->first();
         $this->assertNotNull($status->delivered_at);
@@ -60,14 +60,14 @@ class ReadConversationTest extends TestCase
         $conversation = Conversation::factory()->create();
         $sendMessage = new SendMessage;
 
-        $msg1 = $sendMessage->execute($conversation, $conversation->sender, 'Old');
+        $msg1 = $sendMessage->send($conversation->sender, $conversation, ['body' => 'Old']);
         $status = MessageStatus::where('message_id', $msg1->id)->first();
         $readTime = now()->subHour();
         $status->update(['read_at' => $readTime, 'delivered_at' => $readTime]);
 
-        $sendMessage->execute($conversation, $conversation->sender, 'New');
+        $sendMessage->send($conversation->sender, $conversation, ['body' => 'New']);
 
-        $updated = $this->action->execute($conversation, $conversation->recipient);
+        $updated = $this->action->read($conversation->recipient, $conversation);
 
         $this->assertEquals(1, $updated);
         $status->refresh();
@@ -79,7 +79,7 @@ class ReadConversationTest extends TestCase
     {
         $conversation = Conversation::factory()->create();
 
-        $updated = $this->action->execute($conversation, $conversation->recipient);
+        $updated = $this->action->read($conversation->recipient, $conversation);
 
         $this->assertEquals(0, $updated);
     }

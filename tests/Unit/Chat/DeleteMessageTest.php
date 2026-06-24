@@ -27,9 +27,9 @@ class DeleteMessageTest extends TestCase
     public function it_soft_deletes_own_message(): void
     {
         $conversation = Conversation::factory()->create();
-        $message = (new SendMessage)->execute($conversation, $conversation->sender, 'Delete me');
+        $message = (new SendMessage)->send($conversation->sender, $conversation, ['body' => 'Delete me']);
 
-        $this->action->execute($message, $conversation->sender);
+        $this->action->delete($conversation->sender, $message);
 
         $this->assertSoftDeleted('chat_messages', ['id' => $message->id]);
     }
@@ -38,20 +38,20 @@ class DeleteMessageTest extends TestCase
     public function it_throws_when_deleting_someone_elses_message(): void
     {
         $conversation = Conversation::factory()->create();
-        $message = (new SendMessage)->execute($conversation, $conversation->sender, 'Not yours');
+        $message = (new SendMessage)->send($conversation->sender, $conversation, ['body' => 'Not yours']);
 
         $this->expectException(InvalidArgumentException::class);
 
-        $this->action->execute($message, $conversation->recipient);
+        $this->action->delete($conversation->recipient, $message);
     }
 
     #[Test]
     public function soft_deleted_message_is_excluded_from_default_queries(): void
     {
         $conversation = Conversation::factory()->create();
-        $message = (new SendMessage)->execute($conversation, $conversation->sender, 'Gone');
+        $message = (new SendMessage)->send($conversation->sender, $conversation, ['body' => 'Gone']);
 
-        $this->action->execute($message, $conversation->sender);
+        $this->action->delete($conversation->sender, $message);
 
         $this->assertNull(Message::find($message->id));
         $this->assertNotNull(Message::withTrashed()->find($message->id));

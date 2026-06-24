@@ -28,7 +28,7 @@ class CreateConversationTest extends TestCase
         $sender = User::factory()->create();
         $recipient = User::factory()->create();
 
-        $conversation = $this->action->execute($sender, $recipient);
+        $conversation = $this->action->create($sender, ['recipient_id' => $recipient->id]);
 
         $this->assertInstanceOf(Conversation::class, $conversation);
         $this->assertTrue($conversation->exists);
@@ -42,8 +42,8 @@ class CreateConversationTest extends TestCase
         $sender = User::factory()->create();
         $recipient = User::factory()->create();
 
-        $first = $this->action->execute($sender, $recipient);
-        $second = $this->action->execute($sender, $recipient);
+        $first = $this->action->create($sender, ['recipient_id' => $recipient->id]);
+        $second = $this->action->create($sender, ['recipient_id' => $recipient->id]);
 
         $this->assertEquals($first->id, $second->id);
         $this->assertDatabaseCount('chat_conversations', 1);
@@ -55,8 +55,8 @@ class CreateConversationTest extends TestCase
         $userA = User::factory()->create();
         $userB = User::factory()->create();
 
-        $first = $this->action->execute($userA, $userB);
-        $reversed = $this->action->execute($userB, $userA);
+        $first = $this->action->create($userA, ['recipient_id' => $userB->id]);
+        $reversed = $this->action->create($userB, ['recipient_id' => $userA->id]);
 
         $this->assertEquals($first->id, $reversed->id);
         $this->assertDatabaseCount('chat_conversations', 1);
@@ -69,6 +69,6 @@ class CreateConversationTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
 
-        $this->action->execute($user, $user);
+        $this->action->create($user, ['recipient_id' => $user->id]);
     }
 }

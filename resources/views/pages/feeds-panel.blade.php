@@ -22,9 +22,9 @@
         <div class="absolute inset-x-0 bottom-0 pb-8">
             <div class="mx-auto flex max-w-7xl items-end justify-between px-4 sm:px-6 lg:px-8">
                 <div>
-                    <h2 class="text-2xl font-bold text-white">
-                        {{ $match->name }}<span class="ml-1 font-normal">, {{ $match->age }}</span>
-                    </h2>
+                    <a href="{{ route('profile.show', ['user' => $match]) }}" class="hover:underline text-2xl font-bold text-white">
+                        {{ $match->name }} <span class="ml-1 font-normal">, {{ $match->age }}</span>
+                    </a>
 
                     @if($match->looking_for)
                         <p class="mt-1 text-sm text-white/80">{{ $match->looking_for->label() }}</p>

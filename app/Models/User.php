@@ -8,10 +8,10 @@ use App\Enums\LookingFor;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Scope;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -28,6 +28,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'avatar',
+        'bio',
         'birthdate',
         'gender',
         'looking_for',
@@ -35,11 +36,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'min_age_preference',
         'max_age_preference',
         'flexible_on_age',
-        'last_seen_at'
+        'last_seen_at',
     ];
 
     protected $hidden = [
-        'password', 'remember_token'
+        'password', 'remember_token',
     ];
 
     protected function casts(): array
@@ -66,9 +67,9 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function avatar(): Attribute
     {
         return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $value
+            get: fn (mixed $value, array $attributes) => $value
                 ? Storage::disk('public')->url($value)
-                : 'data:image/svg+xml;base64,' . base64_encode(AvatarFacade::create($attributes['name'])->toSvg())
+                : 'data:image/svg+xml;base64,'.base64_encode(AvatarFacade::create($attributes['name'])->toSvg())
         );
     }
 
@@ -110,21 +111,21 @@ class User extends Authenticatable implements MustVerifyEmail
     #[Scope]
     protected function rankedByInterestMatch(Builder $query, User $me): void
     {
-        $myInterests  = $me->interestIds();
+        $myInterests = $me->interestIds();
         $myCategories = $me->interestCategories();
 
         $query->select('users.*');
 
         $caseParts = [];
-        $bindings  = [];
+        $bindings = [];
 
-        if (!empty($myInterests)) {
+        if (! empty($myInterests)) {
             $ph = implode(',', array_fill(0, count($myInterests), '?'));
             $caseParts[] = "WHEN ui.interest_id IN ({$ph}) THEN 2";
             array_push($bindings, ...$myInterests);
         }
 
-        if (!empty($myCategories)) {
+        if (! empty($myCategories)) {
             $ph = implode(',', array_fill(0, count($myCategories), '?'));
             $caseParts[] = "WHEN ui.category_id IN ({$ph}) THEN 1";
             array_push($bindings, ...$myCategories);
@@ -136,10 +137,11 @@ class User extends Authenticatable implements MustVerifyEmail
             $query
                 ->selectRaw('CASE WHEN users.looking_for = ? THEN 5 ELSE 0 END AS match_score', $bindings)
                 ->orderByDesc('match_score');
+
             return;
         }
 
-        $caseExpr = 'CASE ' . implode(' ', $caseParts) . ' ELSE 0 END';
+        $caseExpr = 'CASE '.implode(' ', $caseParts).' ELSE 0 END';
         $bindings[] = $me->looking_for->value;
 
         $query

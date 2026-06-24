@@ -22,6 +22,14 @@
                                 <p class="mt-0.5 text-sm text-gray-500">{{ $user->gender->label() }}</p>
                             @endif
                         </div>
+
+                        @can('edit', $user)
+                            <a href="{{ route('profile.edit', ['user' => $user]) }}"
+                               class="ml-auto mb-1 inline-flex items-center gap-1.5 rounded-md bg-gray-800 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-700">
+                                <x-heroicon-m-pencil-square class="h-4 w-4" />
+                                Edit profile
+                            </a>
+                        @endcan
                     </div>
 
                     @if($user->bio)

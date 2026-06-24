@@ -29,7 +29,7 @@ class SendMessageTest extends TestCase
     {
         $conversation = Conversation::factory()->create();
 
-        $message = $this->action->execute($conversation, $conversation->sender, 'Hello!');
+        $message = $this->action->send($conversation->sender, $conversation, ['body' => 'Hello!']);
 
         $this->assertInstanceOf(Message::class, $message);
         $this->assertEquals('Hello!', $message->body);
@@ -43,7 +43,7 @@ class SendMessageTest extends TestCase
     {
         $conversation = Conversation::factory()->create();
 
-        $message = $this->action->execute($conversation, $conversation->sender, 'Hi there');
+        $message = $this->action->send($conversation->sender, $conversation, ['body' => 'Hi there']);
 
         $this->assertDatabaseHas('chat_message_status', [
             'message_id' => $message->id,
@@ -57,7 +57,7 @@ class SendMessageTest extends TestCase
         $conversation = Conversation::factory()->create();
         $this->assertNull($conversation->last_message_at);
 
-        $message = $this->action->execute($conversation, $conversation->sender, 'Hey');
+        $message = $this->action->send($conversation->sender, $conversation, ['body' => 'Hey']);
 
         $conversation->refresh();
         $this->assertNotNull($conversation->last_message_at);
@@ -72,7 +72,7 @@ class SendMessageTest extends TestCase
     {
         $conversation = Conversation::factory()->create();
 
-        $message = $this->action->execute($conversation, $conversation->recipient, 'Reply');
+        $message = $this->action->send($conversation->recipient, $conversation, ['body' => 'Reply']);
 
         $this->assertEquals($conversation->recipient_id, $message->sender_id);
         $this->assertDatabaseHas('chat_message_status', [
@@ -89,6 +89,6 @@ class SendMessageTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
 
-        $this->action->execute($conversation, $outsider, 'Sneaky');
+        $this->action->send($outsider, $conversation, ['body' => 'Sneaky']);
     }
 }

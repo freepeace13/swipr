@@ -3,14 +3,12 @@
 use App\Http\Controllers\Chat\DestroyConversation;
 use App\Http\Controllers\Chat\DestroyMessage;
 use App\Http\Controllers\Chat\ListConversations;
-use App\Http\Controllers\Chat\MessageController;
 use App\Http\Controllers\Chat\ShowConversation;
 use App\Http\Controllers\Chat\StoreConversation;
 use App\Http\Controllers\Chat\StoreMessage;
 use App\Http\Controllers\Chat\UpdateMessage;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\Profile\EditProfile;
-use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Profile\ShowProfile;
 use App\Http\Controllers\Profile\UpdateProfile;
 use App\Http\Controllers\SettingController;

@@ -21,6 +21,6 @@ class UpdateProfile extends Controller
 
         $updater->update($user, $request->all());
 
-        return back();
+        return back()->with('status', 'profile-updated');
     }
 }

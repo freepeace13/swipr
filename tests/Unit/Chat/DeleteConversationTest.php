@@ -27,7 +27,7 @@ class DeleteConversationTest extends TestCase
     {
         $conversation = Conversation::factory()->create();
 
-        $this->action->execute($conversation, $conversation->sender);
+        $this->action->delete($conversation->sender, $conversation);
 
         $conversation->refresh();
         $this->assertNotNull($conversation->sender_deleted_at);
@@ -39,7 +39,7 @@ class DeleteConversationTest extends TestCase
     {
         $conversation = Conversation::factory()->create();
 
-        $this->action->execute($conversation, $conversation->recipient);
+        $this->action->delete($conversation->recipient, $conversation);
 
         $conversation->refresh();
         $this->assertNull($conversation->sender_deleted_at);
@@ -51,8 +51,8 @@ class DeleteConversationTest extends TestCase
     {
         $conversation = Conversation::factory()->create();
 
-        $this->action->execute($conversation, $conversation->sender);
-        $this->action->execute($conversation, $conversation->recipient);
+        $this->action->delete($conversation->sender, $conversation);
+        $this->action->delete($conversation->recipient, $conversation);
 
         $conversation->refresh();
         $this->assertNotNull($conversation->sender_deleted_at);
@@ -67,6 +67,6 @@ class DeleteConversationTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
 
-        $this->action->execute($conversation, $outsider);
+        $this->action->delete($outsider, $conversation);
     }
 }

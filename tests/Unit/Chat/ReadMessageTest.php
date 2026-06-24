@@ -26,9 +26,9 @@ class ReadMessageTest extends TestCase
     public function it_marks_a_single_message_as_read(): void
     {
         $conversation = Conversation::factory()->create();
-        $message = (new SendMessage)->execute($conversation, $conversation->sender, 'Hello');
+        $message = (new SendMessage)->send($conversation->sender, $conversation, ['body' => 'Hello']);
 
-        $status = $this->action->execute($message, $conversation->recipient);
+        $status = $this->action->read($conversation->recipient, $message);
 
         $this->assertNotNull($status->read_at);
         $this->assertNotNull($status->delivered_at);
@@ -38,12 +38,12 @@ class ReadMessageTest extends TestCase
     public function it_preserves_existing_delivered_at(): void
     {
         $conversation = Conversation::factory()->create();
-        $message = (new SendMessage)->execute($conversation, $conversation->sender, 'Hello');
+        $message = (new SendMessage)->send($conversation->sender, $conversation, ['body' => 'Hello']);
 
         $deliveredAt = now()->subMinutes(5);
         MessageStatus::where('message_id', $message->id)->update(['delivered_at' => $deliveredAt]);
 
-        $status = $this->action->execute($message, $conversation->recipient);
+        $status = $this->action->read($conversation->recipient, $message);
 
         $this->assertEquals($deliveredAt->toDateTimeString(), $status->delivered_at->toDateTimeString());
         $this->assertNotNull($status->read_at);
@@ -59,7 +59,7 @@ class ReadMessageTest extends TestCase
             'type' => 'text',
         ]);
 
-        $status = $this->action->execute($message, $conversation->recipient);
+        $status = $this->action->read($conversation->recipient, $message);
 
         $this->assertInstanceOf(MessageStatus::class, $status);
         $this->assertTrue($status->exists);
