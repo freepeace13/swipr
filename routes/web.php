@@ -9,20 +9,16 @@ use App\Http\Controllers\Chat\StoreConversation;
 use App\Http\Controllers\Chat\StoreMessage;
 use App\Http\Controllers\Chat\UpdateMessage;
 use App\Http\Controllers\FeedController;
-use App\Http\Controllers\Profile\EditProfile;
 use App\Http\Controllers\Profile\ShowProfile;
 use App\Http\Controllers\Profile\UpdateProfile;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('pages.welcome');
-});
+Route::redirect('/', '/login');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/feeds', FeedController::class)->name('feeds');
 
-    Route::get('/profile/{user}/edit', EditProfile::class)->name('profile.edit');
     Route::get('/profile/{user}', ShowProfile::class)->name('profile.show');
     Route::patch('/profile/{user}', UpdateProfile::class)->name('profile.update');
 

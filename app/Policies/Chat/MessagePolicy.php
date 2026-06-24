@@ -8,26 +8,18 @@ use App\Models\User;
 
 class MessagePolicy
 {
-    /**
-     * Create a new policy instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
     public function create(User $user, Conversation $conversation): bool
     {
-        return true;
+        return $conversation->isParticipant($user);
     }
 
     public function delete(User $user, Message $message): bool
     {
-        return true;
+        return $user->getKey() === $message->sender_id;
     }
 
     public function update(User $user, Message $message): bool
     {
-        return true;
+        return $user->getKey() === $message->sender_id;
     }
 }

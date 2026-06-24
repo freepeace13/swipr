@@ -2,57 +2,54 @@
 
 @section('title', 'Account Settings')
 
-@section('header')
-    <h2 class="text-xl font-semibold leading-tight text-gray-800">Account Settings</h2>
-@endsection
+@section('bodyClass', 'overflow-hidden')
 
 @section('content')
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="bg-white overflow-hidden shadow-sm rounded-lg">
-                <div class="p-6">
-                    <h3 class="text-lg font-medium text-gray-900">Update Password</h3>
-                    <p class="mt-1 text-sm text-gray-600">Ensure your account is using a long, random password to stay secure.</p>
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col gap-6 lg:flex-row">
+                {{-- Sidebar --}}
+                <aside class="lg:w-64 lg:flex-shrink-0">
 
-                    @if (session('status') === 'password-updated')
-                        <div class="mt-4 text-sm font-medium text-green-600">Password updated.</div>
-                    @endif
+                    <nav class="space-y-1">
+                        @php
+                            $links = [
+                                'profile' => 'Profile Information',
+                                'account' => 'Account',
+                            ];
+                        @endphp
 
-                    <form method="POST" action="{{ route('user-password.update') }}" class="mt-6 max-w-xl">
-                        @csrf
-                        @method('PUT')
+                        @foreach ($links as $key => $label)
+                            <a href="{{ route('settings', ['tab' => $key]) }}"
+                               @class([
+                                   'block rounded-md px-3 py-2 text-sm font-medium',
+                                   'bg-gray-100 text-gray-900' => $tab === $key,
+                                   'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => $tab !== $key,
+                               ])
+                               aria-current="{{ $tab === $key ? 'page' : 'false' }}">
+                                {{ $label }}
+                            </a>
+                        @endforeach
+                    </nav>
+                </aside>
 
-                        <div>
-                            <label for="current_password" class="block text-sm font-medium text-gray-700">Current Password</label>
-                            <input id="current_password" type="password" name="current_password" required
-                                   class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            @error('current_password')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                {{-- Content --}}
+                <div class="min-w-0 flex-1">
+                    <div class="overflow-hidden bg-white shadow">
+                        <div class="p-6 sm:p-8">
+                            @if ($tab === 'account')
+                                <h3 class="text-lg font-medium text-gray-900">Update Password</h3>
+                                <p class="mt-1 text-sm text-gray-600">Ensure your account is using a long, random password to stay secure.</p>
+
+                                @include('pages.settings.partials.update-password-form')
+                            @else
+                                <h3 class="text-lg font-medium text-gray-900">Profile Information</h3>
+                                <p class="mt-1 text-sm text-gray-600">Update your profile information and matchmaking preferences.</p>
+
+                                @include('pages.profile.partials.update-profile-information-form', ['user' => $auth, 'interestCategories' => $interestCategories])
+                            @endif
                         </div>
-
-                        <div class="mt-4">
-                            <label for="password" class="block text-sm font-medium text-gray-700">New Password</label>
-                            <input id="password" type="password" name="password" required
-                                   class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            @error('password')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="mt-4">
-                            <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                            <input id="password_confirmation" type="password" name="password_confirmation" required
-                                   class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        </div>
-
-                        <div class="mt-4">
-                            <button type="submit"
-                                    class="px-4 py-2 bg-gray-800 text-white text-sm font-medium rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                Save
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

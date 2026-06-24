@@ -5,6 +5,8 @@ namespace Tests\Feature\Profile;
 use App\Enums\Gender;
 use App\Enums\InterestedIn;
 use App\Enums\LookingFor;
+use App\Models\Interest;
+use App\Models\InterestCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -31,25 +33,14 @@ class UpdateProfileTest extends TestCase
     }
 
     #[Test]
-    public function the_edit_screen_can_be_rendered_by_the_owner(): void
+    public function the_edit_form_is_rendered_on_the_settings_page(): void
     {
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->get(route('profile.edit', ['user' => $user]))
+            ->get(route('settings', ['tab' => 'profile']))
             ->assertOk()
-            ->assertSee('Edit profile');
-    }
-
-    #[Test]
-    public function a_user_cannot_edit_another_users_profile(): void
-    {
-        $user = User::factory()->create();
-        $other = User::factory()->create();
-
-        $this->actingAs($user)
-            ->get(route('profile.edit', ['user' => $other]))
-            ->assertForbidden();
+            ->assertSee('Profile Information');
     }
 
     #[Test]
@@ -125,5 +116,88 @@ class UpdateProfileTest extends TestCase
                 'birthdate' => now()->subYears(15)->toDateString(),
             ]))
             ->assertSessionHasErrors('birthdate', errorBag: 'updateProfileInformation');
+    }
+
+    #[Test]
+    public function a_user_can_update_their_interests(): void
+    {
+        $this->seedInterests();
+        $user = User::factory()->create();
+        $user->interests()->sync(['music_jazz' => ['category_id' => 'music']]);
+
+        $this->actingAs($user)
+            ->patch(route('profile.update', ['user' => $user]), $this->validPayload([
+                'interests' => ['music_rock', 'sports_running'],
+            ]))
+            ->assertSessionHasNoErrors()
+            ->assertSessionHas('status', 'profile-updated');
+
+        $this->assertEqualsCanonicalizing(
+            ['music_rock', 'sports_running'],
+            $user->fresh()->interestIds()
+        );
+
+        // Each interest's category is denormalized onto the pivot.
+        $this->assertDatabaseHas('user_interests', [
+            'user_id' => $user->id,
+            'interest_id' => 'sports_running',
+            'category_id' => 'sports',
+        ]);
+
+        // The previously selected interest was removed.
+        $this->assertDatabaseMissing('user_interests', [
+            'user_id' => $user->id,
+            'interest_id' => 'music_jazz',
+        ]);
+    }
+
+    #[Test]
+    public function interests_can_be_cleared(): void
+    {
+        $this->seedInterests();
+        $user = User::factory()->create();
+        $user->interests()->sync(['music_jazz' => ['category_id' => 'music']]);
+
+        $this->actingAs($user)
+            ->patch(route('profile.update', ['user' => $user]), $this->validPayload())
+            ->assertSessionHasNoErrors();
+
+        $this->assertSame([], $user->fresh()->interestIds());
+    }
+
+    #[Test]
+    public function unknown_interests_are_rejected(): void
+    {
+        $this->seedInterests();
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->patch(route('profile.update', ['user' => $user]), $this->validPayload([
+                'interests' => ['not_a_real_interest'],
+            ]))
+            ->assertSessionHasErrors('interests.0', errorBag: 'updateProfileInformation');
+
+        $this->assertSame([], $user->fresh()->interestIds());
+    }
+
+    private function seedInterests(): void
+    {
+        foreach (['music' => 'Music', 'sports' => 'Sports'] as $id => $label) {
+            InterestCategory::create(['id' => $id, 'label' => $label]);
+        }
+
+        $interests = [
+            'music_jazz' => 'music',
+            'music_rock' => 'music',
+            'sports_running' => 'sports',
+        ];
+
+        foreach ($interests as $id => $categoryId) {
+            Interest::create([
+                'id' => $id,
+                'category_id' => $categoryId,
+                'label' => ucfirst(str_replace('_', ' ', $id)),
+            ]);
+        }
     }
 }

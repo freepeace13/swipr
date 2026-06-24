@@ -25,9 +25,8 @@
                         </button>
 
                         <div x-show="userMenu" x-transition class="absolute right-0 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5" style="display: none;">
-                            <a href="{{ route('profile.show', ['user' => $auth]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile Info</a>
-                            <a href="{{ route('settings') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account Settings</a>
-                            <a href="{{ route('chat.inbox') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Inbox</a>
+                            <a href="{{ route('profile.show', ['user' => $auth]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                            <a href="{{ route('settings') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
                             <hr class="my-1 border-gray-200">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -66,8 +65,8 @@
         <div class="pt-2 pb-3 space-y-1 px-4">
             @auth
                 <p class="text-sm font-medium text-gray-700">{{ $auth->name }}</p>
-                <a href="{{ route('profile.show', ['user' => $auth]) }}" class="block py-1 text-sm text-gray-600 hover:text-gray-900">Profile Info</a>
-                <a href="{{ route('settings') }}" class="block py-1 text-sm text-gray-600 hover:text-gray-900">Account Settings</a>
+                <a href="{{ route('profile.show', ['user' => $auth]) }}" class="block py-1 text-sm text-gray-600 hover:text-gray-900">Profile</a>
+                <a href="{{ route('settings') }}" class="block py-1 text-sm text-gray-600 hover:text-gray-900">Account</a>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="block py-1 text-sm text-gray-600 hover:text-gray-900 underline">Log Out</button>

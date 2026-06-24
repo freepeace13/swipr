@@ -5,6 +5,7 @@ namespace App\Actions\Fortify;
 use App\Enums\Gender;
 use App\Enums\InterestedIn;
 use App\Enums\LookingFor;
+use App\Models\Interest;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Validator;
@@ -49,6 +50,11 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'gte:min_age_preference',
             ],
             'flexible_on_age' => ['required', 'boolean'],
+            'interests' => ['nullable', 'array'],
+            'interests.*' => [
+                'string',
+                Rule::exists('interests', 'id')->where('is_active', true),
+            ],
         ])->validateWithBag('updateProfileInformation');
 
         $attributes = [
@@ -72,6 +78,25 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'email' => $input['email'],
             ])->save();
         }
+
+        $this->syncInterests($user, $input['interests'] ?? []);
+    }
+
+    /**
+     * Sync the user's selected interests, denormalizing each interest's
+     * category onto the pivot (required by the user_interests schema).
+     *
+     * @param  array<int, string>  $interestIds
+     */
+    protected function syncInterests(User $user, array $interestIds): void
+    {
+        $categoryIds = Interest::whereIn('id', $interestIds)->pluck('category_id', 'id');
+
+        $pivot = $categoryIds->mapWithKeys(fn ($categoryId, $interestId) => [
+            $interestId => ['category_id' => $categoryId],
+        ])->all();
+
+        $user->interests()->sync($pivot);
     }
 
     protected function updateVerifiedUser(User $user, array $attributes, string $email): void

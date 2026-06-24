@@ -3,9 +3,7 @@
 @section('title', 'Inbox')
 
 @section('content')
-    @php $me = auth()->user(); @endphp
-
-    <div class="mx-auto h-full max-w-7xl sm:px-6 lg:px-8">
+    <div class="mx-auto h-full max-w-7xl sm:px-6 lg:px-8 my-6">
         <div class="flex h-full flex-col bg-white sm:h-auto sm:shadow">
             {{-- Header --}}
             <div class="flex items-center justify-between border-b border-gray-100 px-4 py-4 sm:px-6">
@@ -25,7 +23,7 @@
                 <div class="min-h-0 flex-1 divide-y divide-gray-100 overflow-y-auto">
                     @foreach ($conversations as $conversation)
                         @php
-                            $other = $conversation->otherUser($me);
+                            $other = $conversation->otherUser($auth);
                             $lastMessage = $conversation->lastMessage;
                             $isOnline = $other->last_seen_at?->isToday();
                         @endphp
@@ -66,7 +64,7 @@
 
                                 @if ($lastMessage)
                                     <p class="mt-0.5 truncate text-sm text-gray-500">
-                                        @if ($lastMessage->sender_id === $me->id)
+                                        @if ($lastMessage->sender_id === $auth->id)
                                             <span class="text-gray-400">You: </span>
                                         @endif
                                         @if ($lastMessage->type !== \App\Enums\Chat\MessageType::Text)

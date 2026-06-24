@@ -4,8 +4,7 @@
 
 @section('content')
     <div class="py-12">
-        <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             {{-- Header card: avatar + name + basics --}}
             <div class="overflow-hidden rounded-2xl bg-white shadow">
                 <div class="h-32 bg-gradient-to-r from-indigo-500 to-purple-600"></div>
@@ -24,7 +23,7 @@
                         </div>
 
                         @can('edit', $user)
-                            <a href="{{ route('profile.edit', ['user' => $user]) }}"
+                            <a href="{{ route('settings', ['tab' => 'profile']) }}"
                                class="ml-auto mb-1 inline-flex items-center gap-1.5 rounded-md bg-gray-800 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-700">
                                 <x-heroicon-m-pencil-square class="h-4 w-4" />
                                 Edit profile

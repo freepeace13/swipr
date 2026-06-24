@@ -7,21 +7,13 @@ use App\Models\User;
 
 class ConversationPolicy
 {
-    /**
-     * Create a new policy instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
     public function view(User $user, Conversation $conversation): bool
     {
-        return true;
+        return $conversation->isParticipant($user);
     }
 
     public function delete(User $user, Conversation $conversation): bool
     {
-        return true;
+        return $conversation->isParticipant($user);
     }
 }

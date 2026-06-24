@@ -2,13 +2,7 @@
 
 namespace App\Providers;
 
-use App\Actions\Chat\CreateConversation;
-use App\Actions\Chat\DeleteConversation;
-use App\Actions\Chat\DeleteMessage;
-use App\Actions\Chat\ReadConversation;
-use App\Actions\Chat\ReadMessage;
-use App\Actions\Chat\SendMessage;
-use App\Actions\Chat\UpdateMessage;
+use App\Actions;
 use App\Contracts\Chat\CreatesConversations;
 use App\Contracts\Chat\DeletesConversations;
 use App\Contracts\Chat\DeletesMessages;
@@ -19,7 +13,6 @@ use App\Contracts\Chat\UpdatesMessages;
 use App\Models\Chat\Conversation;
 use App\Models\Chat\Message;
 use App\Models\User;
-use App\Observers\UserObserver;
 use App\Policies\Chat\ConversationPolicy;
 use App\Policies\Chat\MessagePolicy;
 use App\Policies\ProfilePolicy;
@@ -30,29 +23,27 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        $this->app->bind(CreatesConversations::class, CreateConversation::class);
-        $this->app->bind(DeletesConversations::class, DeleteConversation::class);
-        $this->app->bind(ReadsConversations::class, ReadConversation::class);
-        $this->app->bind(SendsMessages::class, SendMessage::class);
-        $this->app->bind(DeletesMessages::class, DeleteMessage::class);
-        $this->app->bind(UpdatesMessages::class, UpdateMessage::class);
-        $this->app->bind(ReadsMessages::class, ReadMessage::class);
+        $this->configureBindings();
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         $this->registerPolicies();
 
-        User::observe(UserObserver::class);
         View::composer('*', CurrentUserComposer::class);
+    }
+
+    private function configureBindings(): void
+    {
+        $this->app->bind(CreatesConversations::class, Actions\Chat\CreateConversation::class);
+        $this->app->bind(DeletesConversations::class, Actions\Chat\DeleteConversation::class);
+        $this->app->bind(ReadsConversations::class, Actions\Chat\ReadConversation::class);
+        $this->app->bind(SendsMessages::class, Actions\Chat\SendMessage::class);
+        $this->app->bind(DeletesMessages::class, Actions\Chat\DeleteMessage::class);
+        $this->app->bind(UpdatesMessages::class, Actions\Chat\UpdateMessage::class);
+        $this->app->bind(ReadsMessages::class, Actions\Chat\ReadMessage::class);
     }
 
     protected function registerPolicies(): void
