@@ -2,11 +2,12 @@
 
 namespace App\Actions\Chat;
 
+use App\Contracts\Chat\ReadsConversations;
 use App\Models\Chat\Conversation;
 use App\Models\Chat\MessageStatus;
 use App\Models\User;
 
-class ReadConversation
+class ReadConversation implements ReadsConversations
 {
     public function execute(Conversation $conversation, User $user): int
     {

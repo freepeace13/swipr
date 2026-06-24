@@ -25,7 +25,8 @@ class Message extends Model
     ];
 
     protected $casts = [
-        'type' => MessageType::class
+        'type' => MessageType::class,
+        'attachments' => 'array',
     ];
 
     public function status(): HasMany

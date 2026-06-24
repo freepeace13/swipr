@@ -7,17 +7,22 @@
                 </a>
             </div>
 
-            <div class="hidden sm:flex sm:items-center sm:gap-4">
+            <div class="hidden sm:flex sm:items-center gap-4">
                 @auth
+                    <a href="{{ route('feeds') }}" class="flex items-center gap-1.5 text-sm font-medium {{ request()->routeIs('feeds') ? 'text-gray-900' : 'text-gray-500 hover:text-gray-700' }}">
+                        <x-heroicon-o-squares-2x2 class="h-5 w-5" />
+                        Feeds
+                    </a>
+                    <a href="{{ route('chat.inbox') }}" class="flex items-center gap-1.5 text-sm font-medium {{ request()->routeIs('chat.inbox', 'chat.conversations.*') ? 'text-gray-900' : 'text-gray-500 hover:text-gray-700' }}">
+                        <x-heroicon-o-envelope class="h-5 w-5" />
+                        Inbox
+                    </a>
+
                     <div class="relative" @click.away="userMenu = false">
                         <button @click="userMenu = !userMenu" class="flex items-center gap-1 text-sm text-gray-700 hover:text-gray-900">
-                            {{ $auth->name }}
-                            <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
+                            {{ $auth->email }}
+                            <x-heroicon-m-chevron-down class="h-4 w-4" />
                         </button>
-
-
 
                         <div x-show="userMenu" x-transition class="absolute right-0 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5" style="display: none;">
                             <a href="{{ route('profile.show', ['user' => $auth]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile Info</a>
@@ -40,12 +45,18 @@
                 @endauth
             </div>
 
-            <div class="flex items-center sm:hidden">
+            <div class="flex items-center gap-3 sm:hidden">
+                @auth
+                    <a href="{{ route('feeds') }}" class="p-2 rounded-md {{ request()->routeIs('feeds') ? 'text-gray-900' : 'text-gray-400 hover:text-gray-500' }}">
+                        <x-heroicon-o-squares-2x2 class="h-6 w-6" />
+                    </a>
+                    <a href="{{ route('chat.inbox') }}" class="p-2 rounded-md {{ request()->routeIs('chat.inbox', 'chat.conversations.*') ? 'text-gray-900' : 'text-gray-400 hover:text-gray-500' }}">
+                        <x-heroicon-o-envelope class="h-6 w-6" />
+                    </a>
+                @endauth
                 <button @click="open = !open" class="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                    <x-heroicon-o-bars-3 x-show="!open" class="h-6 w-6" />
+                    <x-heroicon-o-x-mark x-show="open" class="h-6 w-6" style="display: none;" />
                 </button>
             </div>
         </div>

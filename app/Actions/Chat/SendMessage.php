@@ -2,12 +2,13 @@
 
 namespace App\Actions\Chat;
 
+use App\Contracts\Chat\SendsMessages;
 use App\Enums\Chat\MessageType;
 use App\Models\Chat\Conversation;
 use App\Models\Chat\Message;
 use App\Models\User;
 
-class SendMessage
+class SendMessage implements SendsMessages
 {
     public function execute(Conversation $conversation, User $sender, string $body): Message
     {

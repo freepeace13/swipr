@@ -24,7 +24,7 @@ class InboxController extends Controller
                     ->whereNull('recipient_deleted_at')
             )
             ->orderByDesc('last_message_at')
-            ->with(['lastMessage', 'otherUser'])
+            ->with(['lastMessage', 'sender', 'recipient'])
             ->paginate(20);
 
         return view('pages.chat.inbox', compact('conversations'));

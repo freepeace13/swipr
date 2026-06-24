@@ -5,15 +5,18 @@ namespace App\Http\Controllers\Profile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\UpdateProfileRequest;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ProfileController extends Controller
 {
+    use AuthorizesRequests;
+
     public function show(User $user)
     {
-        $user->load('interests.category');
+        $this->authorize('view', $user);
 
         return view('pages.profile.show', [
-            'user' => $user
+            'user' => $user->load('interests.category')
         ]);
     }
 

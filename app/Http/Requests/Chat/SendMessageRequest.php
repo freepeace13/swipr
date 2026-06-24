@@ -12,18 +12,16 @@ class SendMessageRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->route('conversation')->isParticipant($this->user());
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            //
+            'body' => ['required', 'string', 'max:5000'],
         ];
     }
 }
