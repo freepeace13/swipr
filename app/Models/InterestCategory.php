@@ -12,7 +12,7 @@ class InterestCategory extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'id', 'label', 'icon'
+        'id', 'label', 'icon',
     ];
 
     public function interests(): HasMany

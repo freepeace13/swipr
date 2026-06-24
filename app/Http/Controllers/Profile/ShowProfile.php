@@ -15,7 +15,7 @@ class ShowProfile extends Controller
         $this->authorize('view', $user);
 
         return view('pages.profile.show', [
-            'user' => $user->load('interests.category')
+            'user' => $user->load('interests.category'),
         ]);
     }
 }

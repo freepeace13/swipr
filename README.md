@@ -2,10 +2,8 @@
 
 > A modern, real-time dating-app **proof of concept**, built with Laravel.
 
-Swipr is a portfolio project put together as part of a **Laravel developer application**. It is meant to
-showcase how I structure a real Laravel codebase end to end — domain modelling, an action/contract layer,
-policies, real-time broadcasting, and a polished front-end built on Blade + Alpine + Tailwind — rather than
-to be a production-ready product.
+Swipr is a full-stack Laravel application featuring domain modelling, an action/contract layer, policies,
+real-time broadcasting, and a polished front-end built on Blade + Alpine + Tailwind.
 
 The whole thing is containerised with **Laravel Sail / Docker**, so you can spin it up and play with it
 without installing PHP, Composer, or Node on your machine.

@@ -21,7 +21,7 @@ class CreateNewUser implements CreatesNewUsers
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)],
             'password' => $this->passwordRules(),
-            'birthdate' => ['required', 'date', 'before_or_equal:' . now()->subYears(self::MIN_AGE)->toDateString()],
+            'birthdate' => ['required', 'date', 'before_or_equal:'.now()->subYears(self::MIN_AGE)->toDateString()],
             'gender' => ['required', new Enum(Gender::class)],
         ])->validateWithBag('registerUser');
 

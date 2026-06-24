@@ -16,12 +16,12 @@ class MessageStatus extends Model
         'message_id',
         'recipient_id',
         'delivered_at',
-        'read_at'
+        'read_at',
     ];
 
     protected $casts = [
         'delivered_at' => 'datetime',
-        'read_at' => 'datetime'
+        'read_at' => 'datetime',
     ];
 
     public function message(): BelongsTo

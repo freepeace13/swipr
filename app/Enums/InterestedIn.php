@@ -2,24 +2,22 @@
 
 namespace App\Enums;
 
-use App\Enums\Gender;
-
 enum InterestedIn: string
 {
-    case Men                = 'men';
-    case Women              = 'women';
-    case NonBinaryPeople    = 'non_binary_people';
-    case Everyone           = 'everyone';
-    case PreferNotToSay     = 'prefer_not_to_say';
+    case Men = 'men';
+    case Women = 'women';
+    case NonBinaryPeople = 'non_binary_people';
+    case Everyone = 'everyone';
+    case PreferNotToSay = 'prefer_not_to_say';
 
     public function label(): string
     {
-        return match($this) {
-            self::Men               => 'Men',
-            self::Women             => 'Women',
-            self::NonBinaryPeople   => 'Non-binary people',
-            self::Everyone          => 'Everyone',
-            self::PreferNotToSay    => 'Prefer not to say',
+        return match ($this) {
+            self::Men => 'Men',
+            self::Women => 'Women',
+            self::NonBinaryPeople => 'Non-binary people',
+            self::Everyone => 'Everyone',
+            self::PreferNotToSay => 'Prefer not to say',
         };
     }
 
@@ -45,9 +43,9 @@ enum InterestedIn: string
     public static function toSelectOptions(): array
     {
         return array_map(
-            fn($case) => [
-                'value'       => $case->value,
-                'label'       => $case->label(),
+            fn ($case) => [
+                'value' => $case->value,
+                'label' => $case->label(),
             ],
             self::cases()
         );

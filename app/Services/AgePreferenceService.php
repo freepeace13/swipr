@@ -16,7 +16,7 @@ class AgePreferenceService
     {
         $age = $user->age;
 
-        return match(true) {
+        return match (true) {
             $age < 25 => [
                 'min' => max(18, $age - 2),
                 'max' => $age + 5,

@@ -13,7 +13,7 @@ class Interest extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'id', 'category_id', 'label', 'icon'
+        'id', 'category_id', 'label', 'icon',
     ];
 
     public function category(): BelongsTo

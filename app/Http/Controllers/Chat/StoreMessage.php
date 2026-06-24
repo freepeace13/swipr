@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Chat;
 
-use App\Contracts\Chat\DeletesMessages;
 use App\Contracts\Chat\SendsMessages;
 use App\Http\Controllers\Controller;
 use App\Models\Chat\Conversation;

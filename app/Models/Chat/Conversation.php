@@ -35,15 +35,15 @@ class Conversation extends Model
     {
         return static::where(function ($q) use ($userA, $userB) {
             $q->where('sender_id', $userA->id)
-              ->where('recipient_id', $userB->id);
+                ->where('recipient_id', $userB->id);
         })->orWhere(function ($q) use ($userA, $userB) {
             $q->where('sender_id', $userB->id)
-              ->where('recipient_id', $userA->id);
+                ->where('recipient_id', $userA->id);
         })->first();
     }
 
     #[Scope]
-    protected function betweenParticipants(Builder $query,  int $userA, int $userB): void
+    protected function betweenParticipants(Builder $query, int $userA, int $userB): void
     {
         $query->where(function ($q) use ($userA, $userB) {
             $q->where('sender_id', $userA)

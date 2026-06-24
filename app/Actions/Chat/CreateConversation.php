@@ -26,7 +26,7 @@ class CreateConversation implements CreatesConversations
             ->betweenParticipants($senderId, $recipientId)
             ->first();
 
-        if (!$record) {
+        if (! $record) {
             $record = Conversation::create([
                 'sender_id' => $senderId,
                 'recipient_id' => $recipientId,
