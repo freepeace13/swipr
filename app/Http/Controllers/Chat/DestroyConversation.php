@@ -18,6 +18,6 @@ class DestroyConversation extends Controller
 
         $action->delete($request->user(), $conversation);
 
-        return view('pages.chat.conversation', compact('conversation'));
+        return redirect()->route('chat.inbox');
     }
 }

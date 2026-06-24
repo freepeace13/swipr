@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'My Profile')
+@section('title', $user->id === auth()->id() ? 'My Profile' : $user->name . "'s Profile")
 
 @section('content')
     <div class="py-12">
@@ -23,6 +23,10 @@
                                 <x-heroicon-m-pencil-square class="h-4 w-4" />
                                 Edit profile
                             </x-button>
+                        @else
+                            <div class="ml-auto mb-1">
+                                <x-message-button :user="$user" size="sm" class="bg-brand-600 text-white shadow-button hover:bg-brand-700" />
+                            </div>
                         @endcan
                     </div>
 

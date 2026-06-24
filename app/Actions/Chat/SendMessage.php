@@ -32,7 +32,15 @@ class SendMessage implements SendsMessages
             'recipient_id' => $conversation->otherParticipantId($sender),
         ]);
 
-        $conversation->update(['last_message_at' => $message->created_at]);
+        $updates = ['last_message_at' => $message->created_at];
+
+        if ($conversation->sender_id === $sender->id && $conversation->sender_deleted_at) {
+            $updates['sender_deleted_at'] = null;
+        } elseif ($conversation->recipient_id === $sender->id && $conversation->recipient_deleted_at) {
+            $updates['recipient_deleted_at'] = null;
+        }
+
+        $conversation->update($updates);
 
         broadcast(new MessageSent($message))->toOthers();
 

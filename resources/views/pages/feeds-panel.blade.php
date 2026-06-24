@@ -44,17 +44,7 @@
                     @endif
                 </div>
 
-                <form method="POST" action="{{ route('chat.conversations.store') }}">
-                    @csrf
-                    <input type="hidden" name="recipient_id" value="{{ $match->id }}">
-                    <button
-                        type="submit"
-                        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm transition hover:bg-white/30"
-                        title="Message {{ $match->name }}"
-                    >
-                        <x-heroicon-o-chat-bubble-oval-left-ellipsis class="h-6 w-6" />
-                    </button>
-                </form>
+                <x-message-button :user="$match" class="bg-white/20 text-white backdrop-blur-sm hover:bg-white/30" />
             </div>
         </div>
     </div>

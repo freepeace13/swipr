@@ -16,12 +16,18 @@ class ListConversations extends Controller
             ->where(
                 fn ($query) => $query
                     ->where('sender_id', $user->getKey())
-                    ->whereNull('sender_deleted_at')
+                    ->where(fn ($q) => $q
+                        ->whereNull('sender_deleted_at')
+                        ->orWhereColumn('last_message_at', '>', 'sender_deleted_at')
+                    )
             )
             ->orWhere(
                 fn ($query) => $query
                     ->where('recipient_id', $user->getKey())
-                    ->whereNull('recipient_deleted_at')
+                    ->where(fn ($q) => $q
+                        ->whereNull('recipient_deleted_at')
+                        ->orWhereColumn('last_message_at', '>', 'recipient_deleted_at')
+                    )
             )
             ->orderByDesc('last_message_at')
             ->with(['lastMessage', 'sender', 'recipient'])

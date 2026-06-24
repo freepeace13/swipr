@@ -113,12 +113,12 @@
 
                     {{-- Message Bubble --}}
                     <div class="flex {{ $isMine ? 'justify-end' : 'justify-start' }}" data-message-id="{{ $message->id }}">
-                        <div class="group relative max-w-[75%] sm:max-w-[65%]">
+                        <div class="group relative max-w-[75%] sm:max-w-[65%] {{ $isMine ? 'pl-7' : '' }}">
                             @if ($isMine)
                                 <button
                                     type="button"
                                     @click="deleteMessage({{ $message->id }})"
-                                    class="absolute -left-7 top-1/2 hidden -translate-y-1/2 rounded-full p-1 text-gray-300 transition hover:text-red-500 group-hover:block"
+                                    class="absolute left-0 top-1/2 hidden -translate-y-1/2 rounded-full p-1 text-gray-300 transition hover:text-red-500 group-hover:block"
                                     title="Delete message"
                                 >
                                     <x-heroicon-m-trash class="h-4 w-4" />
@@ -206,8 +206,8 @@
     {{-- Sent message (mine) --}}
     <template id="sent-message-template">
         <div class="flex justify-end" data-message-id>
-            <div class="group relative max-w-[75%] sm:max-w-[65%]">
-                <button type="button" data-delete class="absolute -left-7 top-1/2 hidden -translate-y-1/2 rounded-full p-1 text-gray-300 transition hover:text-red-500 group-hover:block" title="Delete message">
+            <div class="group relative max-w-[75%] pl-7 sm:max-w-[65%]">
+                <button type="button" data-delete class="absolute left-0 top-1/2 hidden -translate-y-1/2 rounded-full p-1 text-gray-300 transition hover:text-red-500 group-hover:block" title="Delete message">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
                 </button>
                 <div class="bg-brand-600 text-white rounded-bubble rounded-br-md px-4 py-2.5">
