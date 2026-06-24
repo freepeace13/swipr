@@ -3,6 +3,7 @@
 namespace App\Actions\Chat;
 
 use App\Contracts\Chat\DeletesMessages;
+use App\Events\Chat\MessageDeleted;
 use App\Models\Chat\Message;
 use App\Models\User;
 
@@ -14,6 +15,13 @@ class DeleteMessage implements DeletesMessages
             throw new \InvalidArgumentException('Only the sender can delete their message.');
         }
 
-        return $message->delete();
+        $conversationId = $message->conversation_id;
+        $messageId = $message->id;
+
+        $deleted = $message->delete();
+
+        broadcast(new MessageDeleted($conversationId, $messageId))->toOthers();
+
+        return $deleted;
     }
 }

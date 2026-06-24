@@ -4,6 +4,7 @@ namespace App\Actions\Chat;
 
 use App\Contracts\Chat\SendsMessages;
 use App\Enums\Chat\MessageType;
+use App\Events\Chat\MessageSent;
 use App\Models\Chat\Conversation;
 use App\Models\Chat\Message;
 use App\Models\User;
@@ -33,7 +34,7 @@ class SendMessage implements SendsMessages
 
         $conversation->update(['last_message_at' => $message->created_at]);
 
-        // dispatch message created event
+        broadcast(new MessageSent($message))->toOthers();
 
         return $message;
     }

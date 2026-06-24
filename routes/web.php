@@ -3,6 +3,7 @@
 use App\Http\Controllers\Chat\DestroyConversation;
 use App\Http\Controllers\Chat\DestroyMessage;
 use App\Http\Controllers\Chat\ListConversations;
+use App\Http\Controllers\Chat\ReadConversation;
 use App\Http\Controllers\Chat\ShowConversation;
 use App\Http\Controllers\Chat\StoreConversation;
 use App\Http\Controllers\Chat\StoreMessage;
@@ -28,6 +29,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/settings', SettingController::class)->name('settings');
 
     Route::get('/inbox', ListConversations::class)->name('chat.inbox');
+    Route::post('/conversations/{conversation}/read', ReadConversation::class)->name('chat.conversations.read');
     Route::post('/conversations/{conversation}/messages', StoreMessage::class)->name('chat.conversations.messages.store');
     Route::patch('/conversations/{conversation}/messages/{message}', UpdateMessage::class)->name('chat.conversations.messages.update');
     Route::delete('/conversations/{conversation}/messages/{message}', DestroyMessage::class)->name('chat.conversations.messages.destroy');

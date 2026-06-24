@@ -43,4 +43,29 @@ class Message extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Normalized payload broadcast to clients over the websocket.
+     *
+     * @return array<string, mixed>
+     */
+    public function toBroadcastArray(): array
+    {
+        $this->loadMissing('sender');
+
+        return [
+            'id' => $this->id,
+            'conversation_id' => $this->conversation_id,
+            'sender_id' => $this->sender_id,
+            'body' => $this->body,
+            'type' => $this->type->value,
+            'attachments' => $this->attachments,
+            'created_at' => $this->created_at->toIso8601String(),
+            'sender' => [
+                'id' => $this->sender->id,
+                'name' => $this->sender->name,
+                'avatar' => $this->sender->avatar,
+            ],
+        ];
+    }
 }

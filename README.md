@@ -1,58 +1,160 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Swipr 💘
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> A modern, real-time dating-app **proof of concept**, built with Laravel.
 
-## About Laravel
+Swipr is a portfolio project put together as part of a **Laravel developer application**. It is meant to
+showcase how I structure a real Laravel codebase end to end — domain modelling, an action/contract layer,
+policies, real-time broadcasting, and a polished front-end built on Blade + Alpine + Tailwind — rather than
+to be a production-ready product.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The whole thing is containerised with **Laravel Sail / Docker**, so you can spin it up and play with it
+without installing PHP, Composer, or Node on your machine.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ✨ Core features
 
-## Learning Laravel
+**Discovery feed (the fun part)**
+- Full-screen, **TikTok-style profile feed** — one profile per panel with CSS scroll-snap.
+- Navigate however feels natural:
+  - 🖱️ **Mouse wheel** to scroll up/down
+  - ⌨️ **↑ / ↓ arrow keys** to step between profiles
+  - 👆 **Click-and-drag** (and touch) to flick between profiles
+- **Infinite scroll** — more profiles load automatically (cursor pagination) as you approach the end.
+- A live `current / total` counter so you always know where you are in the stack.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**Smart matching**
+- Candidates are filtered by **gender compatibility** (13 gender identities + "interested in" preferences,
+  matched reciprocally) and by **mutual age preferences** (with an optional "flexible on age" buffer).
+- Profiles can be **ranked by shared interests and interest categories** for more relevant matches.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Profiles & accounts**
+- Rich profiles: bio, birthdate/age, gender, dating preferences (interested in, looking for, age range),
+  and weighted **interests** grouped into categories.
+- Auto-generated SVG **avatars** when no photo is uploaded (Laravolt Avatar).
+- Full auth suite via **Laravel Fortify**: registration, email verification, password reset,
+  **two-factor authentication**, and **passkeys**.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+**Real-time chat**
+- One-to-one **conversations** with send / edit / delete messages.
+- **Read receipts** and **live message delivery** over websockets — no page refresh.
+- Powered by **Laravel Reverb** broadcasting + **Laravel Echo** on the client.
 
-## Agentic Development
+**Demo data**
+- Seeders create a catalogue of **interests** and **500 realistic demo profiles** so the feed and matching
+  feel real the moment you log in.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+---
+
+## 🧰 Tech stack
+
+| Layer | Tools |
+|---|---|
+| **Language / framework** | PHP 8.5, Laravel 13 |
+| **Front-end** | Blade, Alpine.js, Tailwind CSS v4, Vite |
+| **Real-time** | Laravel Reverb (websockets), Laravel Echo, Pusher JS protocol |
+| **Auth** | Laravel Fortify (2FA, passkeys, email verification, password reset) |
+| **Queue / cache / jobs** | Redis, Laravel Horizon |
+| **Database** | MySQL 8.4 |
+| **Media & avatars** | Spatie Media Library, Laravolt Avatar |
+| **UI icons** | Blade Heroicons |
+| **Local dev** | Laravel Sail (Docker), Pint, Pail, PHPUnit |
+
+**Architecture highlights:** single-action invokable controllers, a dedicated `Actions/` + `Contracts/`
+layer bound through the container, Eloquent query `#[Scope]`s for the matching logic, policies for
+authorization, events for broadcasting, and enums for domain vocabulary (gender, looking-for, interested-in).
+
+---
+
+## 🚀 Getting started
+
+### Prerequisites
+
+You only need **Docker** running:
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (macOS/Windows), or Docker Engine +
+  Compose plugin (Linux).
+- `make` (pre-installed on macOS/Linux; on Windows use WSL2).
+
+That's it — no local PHP, Composer, or Node required. The setup uses a throwaway Docker image to install
+dependencies before Sail takes over.
+
+### Quick start (3 commands)
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+make setup      # 1. Create .env, configure it for Sail, install PHP dependencies
+make up         # 2. Build and start the containers (first run pulls/builds images)
+make init       # 3. Run migrations, seed demo data, and build front-end assets
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Then open **http://localhost** 🎉
 
-## Contributing
+> **Tip:** Run `make help` at any time to see every available command.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Make the chat live (optional, recommended)
 
-## Code of Conduct
+Real-time chat needs the websocket server and a queue worker. In a **separate terminal**:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+make realtime   # starts Reverb (websockets) + a queue worker together
+```
 
-## Security Vulnerabilities
+(Or run them individually with `make reverb` and `make queue`.)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 🧪 Trying it out
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The fastest way to see everything working:
+
+1. **Register an account** at http://localhost. You'll be asked for a name, email, password, birthdate,
+   and gender.
+2. **Skip email verification quickly** — emails are written to the log, but for convenience just run:
+   ```bash
+   make verify    # marks all accounts as verified
+   ```
+   (Alternatively, the verification link is printed to the logs — view them with `make logs`.)
+3. **Complete your dating preferences** — open **Edit Profile** and set *who you're interested in* and your
+   *age range*. This is what powers the matching, so the feed needs it.
+4. **Open Discover** and start browsing the 500 seeded profiles — scroll with the wheel, arrow keys, or by
+   dragging.
+5. **Start a conversation** from a profile to try the real-time chat (make sure `make realtime` is running).
+
+> All seeded demo accounts use the password **`password`** (their emails are randomised). The simplest path
+> is to register your own account as above.
+
+---
+
+## 🛠️ Useful commands
+
+| Command | What it does |
+|---|---|
+| `make setup` | One-time bootstrap: create `.env` + install PHP deps (no host PHP needed) |
+| `make up` / `make down` | Start / stop the containers |
+| `make init` | Migrate, seed demo data, and build assets |
+| `make fresh` | Reset the database and re-seed demo data |
+| `make verify` | Mark all accounts as email-verified (handy while testing) |
+| `php artisan swipr:fake-users --count=50` | Generate random fake users (with interests) for testing |
+| `make dev` | Run the Vite dev server with hot reload |
+| `make realtime` | Start Reverb + queue worker (for live chat) |
+| `make logs` | Tail the application logs |
+| `make shell` | Open a shell inside the app container |
+| `make test` | Run the test suite |
+| `make build` | Force a clean rebuild of the app image |
+
+---
+
+## 🧯 Troubleshooting
+
+- **Port already in use (80 / 3306 / 6379 / 8080)?** Stop the conflicting service, or set the relevant
+  forward port in `.env` (e.g. `APP_PORT`, `FORWARD_DB_PORT`, `FORWARD_REDIS_PORT`, `REVERB_PORT`) and run
+  `make up` again.
+- **The feed says "No matches yet"?** Make sure you've set *interested in* and an *age range* on your
+  profile (step 3 above). Widen the age range or toggle "flexible on age" to see more people.
+- **Chat doesn't update live?** Confirm `make realtime` is running and that the page was loaded over
+  `http://localhost`.
+- **Need a clean slate?** `make fresh` re-runs all migrations and re-seeds the demo data.
+
+---
+
+<p align="center"><em>Built with Laravel — thanks for taking a look! 🙏</em></p>
