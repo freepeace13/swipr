@@ -132,7 +132,7 @@ The fastest way to see everything working:
 | `make init` | Migrate, seed demo data, and build assets |
 | `make fresh` | Reset the database and re-seed demo data |
 | `make verify` | Mark all accounts as email-verified (handy while testing) |
-| `./vendor/bin/sail artisan swipr:fake-users --count=50` | Generate random fake users (with interests) for testing |
+| `./vendor/bin/sail artisan swipr:fake-users --count=50` | Generate random fake users (with interests) for testing. Requires seeded interests (`make init` or `make fresh`); if missing, the command seeds them automatically. |
 | `make dev` | Run the Vite dev server with hot reload |
 | `make realtime` | Start Reverb + queue worker (for live chat) |
 | `make logs` | Tail the application logs |

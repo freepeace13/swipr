@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Interest;
 use App\Models\User;
+use Database\Seeders\InterestSeeder;
 use Illuminate\Console\Command;
 
 class FakeUsers extends Command
@@ -19,6 +21,11 @@ class FakeUsers extends Command
             $this->error('The --count option must be a positive integer.');
 
             return self::FAILURE;
+        }
+
+        if (Interest::count() === 0) {
+            $this->info('No interests found — seeding interests first...');
+            $this->call('db:seed', ['--class' => InterestSeeder::class]);
         }
 
         $this->info("Generating {$count} fake users...");
