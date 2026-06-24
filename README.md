@@ -54,7 +54,7 @@ without installing PHP, Composer, or Node on your machine.
 | **Auth** | Laravel Fortify (2FA, passkeys, email verification, password reset) |
 | **Queue / cache / jobs** | Redis, Laravel Horizon |
 | **Database** | MySQL 8.4 |
-| **Media & avatars** | Spatie Media Library, Laravolt Avatar |
+| **Avatars** | Laravolt Avatar |
 | **UI icons** | Blade Heroicons |
 | **Local dev** | Laravel Sail (Docker), Pint, Pail, PHPUnit |
 
