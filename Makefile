@@ -37,36 +37,38 @@ setup: ## One-time bootstrap: create .env and install PHP deps (no host PHP need
 	@echo "Configuring environment for Sail..."
 
 	# App
-	sed -i 's|^APP_NAME=.*|APP_NAME=Swipr|' .env
-	sed -i 's|^APP_URL=.*|APP_URL=http://localhost|' .env
+	perl -pi -e 's|^APP_NAME=.*|APP_NAME=Swipr|' .env
+	perl -pi -e 's|^APP_URL=.*|APP_URL=http://localhost|' .env
 
 	# Database — use the "mysql" service name as host
-	sed -i 's|^DB_HOST=.*|DB_HOST=mysql|' .env
-	sed -i 's|^DB_USERNAME=.*|DB_USERNAME=sail|' .env
-	sed -i 's|^DB_PASSWORD=.*|DB_PASSWORD=password|' .env
+	perl -pi -e 's|^DB_HOST=.*|DB_HOST=mysql|' .env
+	perl -pi -e 's|^DB_USERNAME=.*|DB_USERNAME=sail|' .env
+	perl -pi -e 's|^DB_PASSWORD=.*|DB_PASSWORD=password|' .env
 
 	# Redis — use the "redis" service name as host
-	sed -i 's|^REDIS_HOST=.*|REDIS_HOST=redis|' .env
-	sed -i 's|^REDIS_PASSWORD=.*|REDIS_PASSWORD=null|' .env
+	perl -pi -e 's|^REDIS_HOST=.*|REDIS_HOST=redis|' .env
+	perl -pi -e 's|^REDIS_PASSWORD=.*|REDIS_PASSWORD=null|' .env
 
 	# Cache / queue via Redis
-	sed -i 's|^CACHE_STORE=.*|CACHE_STORE=redis|' .env
-	sed -i 's|^QUEUE_CONNECTION=.*|QUEUE_CONNECTION=redis|' .env
+	perl -pi -e 's|^CACHE_STORE=.*|CACHE_STORE=redis|' .env
+	perl -pi -e 's|^QUEUE_CONNECTION=.*|QUEUE_CONNECTION=redis|' .env
 
 	# Broadcasting via Reverb
-	sed -i 's|^BROADCAST_CONNECTION=.*|BROADCAST_CONNECTION=reverb|' .env
+	perl -pi -e 's|^BROADCAST_CONNECTION=.*|BROADCAST_CONNECTION=reverb|' .env
 
-	# Reverb (real-time websockets) credentials
-	printf '\nREVERB_APP_ID=1001\n' >> .env
-	printf 'REVERB_APP_KEY=laravel-reverb-key\n' >> .env
-	printf 'REVERB_APP_SECRET=laravel-reverb-secret\n' >> .env
-	printf 'REVERB_HOST=localhost\n' >> .env
-	printf 'REVERB_PORT=8080\n' >> .env
-	printf 'REVERB_SCHEME=http\n' >> .env
-	printf '\nVITE_REVERB_APP_KEY=$${REVERB_APP_KEY}\n' >> .env
-	printf 'VITE_REVERB_HOST=$${REVERB_HOST}\n' >> .env
-	printf 'VITE_REVERB_PORT=$${REVERB_PORT}\n' >> .env
-	printf 'VITE_REVERB_SCHEME=$${REVERB_SCHEME}\n' >> .env
+	# Reverb (real-time websockets) credentials — append only if not already present
+	@grep -q '^REVERB_APP_ID=' .env || { \
+		printf '\nREVERB_APP_ID=1001\n' >> .env; \
+		printf 'REVERB_APP_KEY=laravel-reverb-key\n' >> .env; \
+		printf 'REVERB_APP_SECRET=laravel-reverb-secret\n' >> .env; \
+		printf 'REVERB_HOST=localhost\n' >> .env; \
+		printf 'REVERB_PORT=8080\n' >> .env; \
+		printf 'REVERB_SCHEME=http\n' >> .env; \
+		printf '\nVITE_REVERB_APP_KEY=$${REVERB_APP_KEY}\n' >> .env; \
+		printf 'VITE_REVERB_HOST=$${REVERB_HOST}\n' >> .env; \
+		printf 'VITE_REVERB_PORT=$${REVERB_PORT}\n' >> .env; \
+		printf 'VITE_REVERB_SCHEME=$${REVERB_SCHEME}\n' >> .env; \
+	}
 
 	@echo "Installing PHP dependencies via Docker (first run can take a minute)..."
 	$(DOCKER_RUN) composer install --ignore-platform-reqs --no-interaction
