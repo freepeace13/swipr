@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Chat\Conversation;
 use Illuminate\Http\Request;
 
-class InboxController extends Controller
+class ListConversations extends Controller
 {
     public function __invoke(Request $request)
     {

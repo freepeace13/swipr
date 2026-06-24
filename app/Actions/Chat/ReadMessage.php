@@ -9,7 +9,7 @@ use App\Models\User;
 
 class ReadMessage implements ReadsMessages
 {
-    public function execute(Message $message, User $recipient): MessageStatus
+    public function read(User $recipient, Message $message): MessageStatus
     {
         $status = MessageStatus::firstOrNew([
             'message_id' => $message->id,

@@ -3,6 +3,8 @@
 namespace App\Models\Chat;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -38,6 +40,18 @@ class Conversation extends Model
             $q->where('sender_id', $userB->id)
               ->where('recipient_id', $userA->id);
         })->first();
+    }
+
+    #[Scope]
+    protected function betweenParticipants(Builder $query,  int $userA, int $userB): void
+    {
+        $query->where(function ($q) use ($userA, $userB) {
+            $q->where('sender_id', $userA)
+                ->where('recipient_id', $userB);
+        })->orWhere(function ($q) use ($userA, $userB) {
+            $q->where('sender_id', $userB)
+                ->where('recipient_id', $userA);
+        });
     }
 
     public function isParticipant(User $user): bool

@@ -9,7 +9,7 @@ use App\Models\User;
 
 class ReadConversation implements ReadsConversations
 {
-    public function execute(Conversation $conversation, User $user): int
+    public function read(User $user, Conversation $conversation): int
     {
         $now = now();
 

@@ -7,6 +7,7 @@ use App\Enums\InterestedIn;
 use App\Enums\LookingFor;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Builder;
@@ -55,15 +56,6 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    protected function avatar(): Attribute
-    {
-        return Attribute::make(
-            get: fn (mixed $value, array $attributes) => $value
-                ? Storage::disk('public')->url($value)
-                : 'data:image/svg+xml;base64,' . base64_encode(AvatarFacade::create($attributes['name'])->toSvg())
-        );
-    }
-
     protected function age(): Attribute
     {
         return Attribute::make(
@@ -71,46 +63,37 @@ class User extends Authenticatable implements MustVerifyEmail
         );
     }
 
-    public function interestIds(): array
+    protected function avatar(): Attribute
     {
-        return $this->interests->pluck('id')->toArray();
+        return Attribute::make(
+            get: fn(mixed $value, array $attributes) => $value
+                ? Storage::disk('public')->url($value)
+                : 'data:image/svg+xml;base64,' . base64_encode(AvatarFacade::create($attributes['name'])->toSvg())
+        );
     }
 
-    public function interestCategories(): array
-    {
-        return $this->interests->pluck('category_id')->unique()->toArray();
-    }
-
-    public function interests(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            related: Interest::class,
-            table: 'user_interests',
-            foreignPivotKey: 'user_id',
-            relatedPivotKey: 'interest_id',
-        )->withPivot('weight');
-    }
-
-    public function scopeMatchesByGender(Builder $query, User $me): Builder
+    #[Scope]
+    protected function matchesByGender(Builder $query, User $me): void
     {
         $compatibleGenders = array_map(fn ($g) => $g->value, $me->interested_in->compatibleGenders());
         $candidateInterestedIn = array_map(fn ($i) => $i->value, $me->gender->compatibleInterestedIn());
 
-        return $query
+        $query
             ->whereIn('users.gender', $compatibleGenders)
             ->whereIn('users.interested_in', $candidateInterestedIn);
     }
 
-    public function scopeMatchesByAge(Builder $query, User $me): Builder
+    #[Scope]
+    protected function matchesByAge(Builder $query, User $me): void
     {
-        $myAge   = $me->age;
+        $myAge = $me->age;
         $myBuffer = $me->flexible_on_age ? 3 : 0;
-        $today   = now()->toDateString();
+        $today = now()->toDateString();
 
         $minPref = max(18, $me->min_age_preference - $myBuffer);
         $maxPref = $me->max_age_preference + $myBuffer;
 
-        return $query
+        $query
             ->whereRaw('TIMESTAMPDIFF(YEAR, birthdate, ?) BETWEEN ? AND ?', [$today, $minPref, $maxPref])
             ->where(function ($q) use ($myAge) {
                 $q->where(function ($inner) use ($myAge) {
@@ -124,7 +107,8 @@ class User extends Authenticatable implements MustVerifyEmail
             });
     }
 
-    public function scopeRankedByInterestMatch(Builder $query, User $me): Builder
+    #[Scope]
+    protected function rankedByInterestMatch(Builder $query, User $me): void
     {
         $myInterests  = $me->interestIds();
         $myCategories = $me->interestCategories();
@@ -149,15 +133,16 @@ class User extends Authenticatable implements MustVerifyEmail
         if (empty($caseParts)) {
             $bindings[] = $me->looking_for->value;
 
-            return $query
+            $query
                 ->selectRaw('CASE WHEN users.looking_for = ? THEN 5 ELSE 0 END AS match_score', $bindings)
                 ->orderByDesc('match_score');
+            return;
         }
 
         $caseExpr = 'CASE ' . implode(' ', $caseParts) . ' ELSE 0 END';
         $bindings[] = $me->looking_for->value;
 
-        return $query
+        $query
             ->selectRaw(
                 "COALESCE(SUM({$caseExpr}), 0) + CASE WHEN users.looking_for = ? THEN 5 ELSE 0 END AS match_score",
                 $bindings
@@ -165,5 +150,25 @@ class User extends Authenticatable implements MustVerifyEmail
             ->leftJoin('user_interests as ui', 'ui.user_id', '=', 'users.id')
             ->groupBy('users.id')
             ->orderByDesc('match_score');
+    }
+
+    public function interestIds(): array
+    {
+        return $this->interests->pluck('id')->toArray();
+    }
+
+    public function interestCategories(): array
+    {
+        return $this->interests->pluck('category_id')->unique()->toArray();
+    }
+
+    public function interests(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            related: Interest::class,
+            table: 'user_interests',
+            foreignPivotKey: 'user_id',
+            relatedPivotKey: 'interest_id',
+        )->withPivot('weight');
     }
 }

@@ -7,18 +7,23 @@ use App\Enums\Chat\MessageType;
 use App\Models\Chat\Conversation;
 use App\Models\Chat\Message;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class SendMessage implements SendsMessages
 {
-    public function execute(Conversation $conversation, User $sender, string $body): Message
+    public function send(User $sender, Conversation $conversation, array $input): Message
     {
+        $validated = Validator::make($input, [
+            'body' => ['required', 'string', 'max:5000'],
+        ])->validateWithBag('sendMessage');
+
         if (! $conversation->isParticipant($sender)) {
             throw new \InvalidArgumentException('Sender is not a participant in this conversation.');
         }
 
         $message = $conversation->messages()->create([
             'sender_id' => $sender->id,
-            'body' => $body,
+            'body' => $validated['body'],
             'type' => MessageType::Text,
         ]);
 
@@ -27,6 +32,8 @@ class SendMessage implements SendsMessages
         ]);
 
         $conversation->update(['last_message_at' => $message->created_at]);
+
+        // dispatch message created event
 
         return $message;
     }

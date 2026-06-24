@@ -8,7 +8,7 @@ use App\Models\User;
 
 class DeleteConversation implements DeletesConversations
 {
-    public function execute(Conversation $conversation, User $user): bool
+    public function delete(User $user, Conversation $conversation): bool
     {
         if ($conversation->sender_id === $user->id) {
             return $conversation->update(['sender_deleted_at' => now()]);

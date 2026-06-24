@@ -5,19 +5,34 @@ namespace App\Actions\Chat;
 use App\Contracts\Chat\CreatesConversations;
 use App\Models\Chat\Conversation;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class CreateConversation implements CreatesConversations
 {
-    public function execute(User $sender, User $recipient): Conversation
+    public function create(User $sender, array $input): Conversation
     {
-        if ($sender->id === $recipient->id) {
+        $validated = Validator::make($input, [
+            'recipient_id' => ['required', 'exists:users,id'],
+        ])->validateWithBag('createConversation');
+
+        $recipientId = $validated['recipient_id'];
+        $senderId = $sender->getKey();
+
+        if ($recipientId === $senderId) {
             throw new \InvalidArgumentException('Cannot create a conversation with yourself.');
         }
 
-        return Conversation::between($sender, $recipient)
-            ?? Conversation::create([
-                'sender_id' => $sender->id,
-                'recipient_id' => $recipient->id,
+        $record = Conversation::query()
+            ->betweenParticipants($senderId, $recipientId)
+            ->first();
+
+        if (!$record) {
+            $record = Conversation::create([
+                'sender_id' => $senderId,
+                'recipient_id' => $recipientId,
             ]);
+        }
+
+        return $record;
     }
 }
