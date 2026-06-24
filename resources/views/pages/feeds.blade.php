@@ -37,11 +37,9 @@
 @section('content')
     @if($matches->isEmpty())
         <div class="flex items-center justify-center" style="height: var(--feed-h)">
-            <div class="rounded-2xl bg-white p-12 text-center shadow">
-                <x-heroicon-o-face-smile class="mx-auto h-12 w-12 text-gray-300" />
-                <h3 class="mt-4 text-lg font-semibold text-gray-900">No matches yet</h3>
-                <p class="mt-1 text-sm text-gray-500">Try broadening your preferences to discover more people.</p>
-            </div>
+            <x-card :padding="false" class="p-12 text-center">
+                <x-empty-state icon="face-smile" title="No matches yet" description="Try broadening your preferences to discover more people." />
+            </x-card>
         </div>
     @else
         <div

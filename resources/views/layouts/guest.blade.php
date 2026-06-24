@@ -9,17 +9,17 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-100 text-gray-900 antialiased">
+<body class="bg-gray-50 text-gray-900 antialiased">
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
         <div>
             <a href="/">
-                <h1 class="text-3xl font-bold text-gray-800">{{ config('app.name', 'Swipr') }}</h1>
+                <h1 class="bg-gradient-to-r from-brand-500 to-accent-600 bg-clip-text text-3xl font-bold text-transparent">{{ config('app.name', 'Swipr') }}</h1>
             </a>
         </div>
 
-        <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden rounded-lg">
+        <x-card class="w-full sm:max-w-md mt-6">
             @yield('content')
-        </div>
+        </x-card>
     </div>
 </body>
 </html>

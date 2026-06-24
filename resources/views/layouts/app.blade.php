@@ -10,7 +10,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
-<body class="bg-gray-100 text-gray-900 antialiased @yield('bodyClass')">
+<body class="bg-gray-50 text-gray-900 antialiased @yield('bodyClass')">
     <div class="flex h-dvh flex-col">
         @include('layouts.navigation')
 

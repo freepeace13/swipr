@@ -14,7 +14,7 @@ use App\Http\Controllers\Profile\UpdateProfile;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/login');
+Route::view('/', 'pages.welcome')->name('welcome');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/feeds', FeedController::class)->name('feeds');

@@ -8,127 +8,95 @@
 
     {{-- Avatar preview --}}
     <div class="flex items-center gap-4">
-        <img
-            src="{{ $user->avatar }}"
-            alt="{{ $user->name }}"
-            class="h-16 w-16 rounded-full border border-gray-200 bg-gray-100 object-cover"
-        >
+        <x-avatar :src="$user->avatar" :alt="$user->name" size="lg" class="border border-gray-200 bg-gray-100" />
     </div>
 
     {{-- Name --}}
     <div>
-        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-        <input id="name" type="text" name="name" value="{{ old('name', $user->name) }}" required autofocus
-               class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-        @error('name', 'updateProfileInformation')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-        @enderror
+        <x-label for="name">Name</x-label>
+        <x-input name="name" :value="old('name', $user->name)" required autofocus />
+        <x-form-error field="name" bag="updateProfileInformation" />
     </div>
 
     {{-- Email --}}
     <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-        <input id="email" type="email" name="email" value="{{ old('email', $user->email) }}" required
-               class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-        @error('email', 'updateProfileInformation')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-        @enderror
+        <x-label for="email">Email</x-label>
+        <x-input type="email" name="email" :value="old('email', $user->email)" required />
+        <x-form-error field="email" bag="updateProfileInformation" />
     </div>
 
     {{-- Bio --}}
     <div>
-        <label for="bio" class="block text-sm font-medium text-gray-700">Bio</label>
-        <textarea id="bio" name="bio" rows="4" maxlength="1000"
-                  class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  placeholder="Tell people a little about yourself">{{ old('bio', $user->bio) }}</textarea>
-        @error('bio', 'updateProfileInformation')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-        @enderror
+        <x-label for="bio">Bio</x-label>
+        <x-textarea name="bio" rows="4" maxlength="1000" placeholder="Tell people a little about yourself">{{ old('bio', $user->bio) }}</x-textarea>
+        <x-form-error field="bio" bag="updateProfileInformation" />
     </div>
 
     {{-- Birthdate --}}
     <div>
-        <label for="birthdate" class="block text-sm font-medium text-gray-700">Date of Birth</label>
-        <input id="birthdate" type="date" name="birthdate"
-               value="{{ old('birthdate', $user->birthdate?->toDateString()) }}" required
-               max="{{ now()->subYears(18)->toDateString() }}"
-               min="{{ now()->subYears(100)->toDateString() }}"
-               class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-        @error('birthdate', 'updateProfileInformation')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-        @enderror
+        <x-label for="birthdate">Date of Birth</x-label>
+        <x-input type="date" name="birthdate"
+               :value="old('birthdate', $user->birthdate?->toDateString())" required
+               :max="now()->subYears(18)->toDateString()"
+               :min="now()->subYears(100)->toDateString()" />
+        <x-form-error field="birthdate" bag="updateProfileInformation" />
     </div>
 
     {{-- Gender --}}
     <div>
-        <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
-        <select id="gender" name="gender" required
-                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        <x-label for="gender">Gender</x-label>
+        <x-select-input name="gender" required>
             @foreach(\App\Enums\Gender::toSelectOptions() as $option)
                 <option value="{{ $option['value'] }}" @selected(old('gender', $user->gender?->value) === $option['value'])>
                     {{ $option['label'] }}
                 </option>
             @endforeach
-        </select>
-        @error('gender', 'updateProfileInformation')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-        @enderror
+        </x-select-input>
+        <x-form-error field="gender" bag="updateProfileInformation" />
     </div>
 
     {{-- Looking for --}}
     <div>
-        <label for="looking_for" class="block text-sm font-medium text-gray-700">Looking for</label>
-        <select id="looking_for" name="looking_for" required
-                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        <x-label for="looking_for">Looking for</x-label>
+        <x-select-input name="looking_for" required>
             @foreach(\App\Enums\LookingFor::toSelectOptions() as $option)
                 <option value="{{ $option['value'] }}" @selected(old('looking_for', $user->looking_for?->value) === $option['value'])>
                     {{ $option['label'] }}
                 </option>
             @endforeach
-        </select>
-        @error('looking_for', 'updateProfileInformation')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-        @enderror
+        </x-select-input>
+        <x-form-error field="looking_for" bag="updateProfileInformation" />
     </div>
 
     {{-- Interested in --}}
     <div>
-        <label for="interested_in" class="block text-sm font-medium text-gray-700">Interested in</label>
-        <select id="interested_in" name="interested_in" required
-                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        <x-label for="interested_in">Interested in</x-label>
+        <x-select-input name="interested_in" required>
             @foreach(\App\Enums\InterestedIn::toSelectOptions() as $option)
                 <option value="{{ $option['value'] }}" @selected(old('interested_in', $user->interested_in?->value) === $option['value'])>
                     {{ $option['label'] }}
                 </option>
             @endforeach
-        </select>
-        @error('interested_in', 'updateProfileInformation')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-        @enderror
+        </x-select-input>
+        <x-form-error field="interested_in" bag="updateProfileInformation" />
     </div>
 
     {{-- Age preference --}}
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
-            <label for="min_age_preference" class="block text-sm font-medium text-gray-700">Minimum age</label>
-            <input id="min_age_preference" type="number" name="min_age_preference"
-                   value="{{ old('min_age_preference', $user->min_age_preference) }}" required
-                   min="18" max="99"
-                   class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-            @error('min_age_preference', 'updateProfileInformation')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
+            <x-label for="min_age_preference">Minimum age</x-label>
+            <x-input type="number" name="min_age_preference"
+                   :value="old('min_age_preference', $user->min_age_preference)" required
+                   min="18" max="99" />
+            <x-form-error field="min_age_preference" bag="updateProfileInformation" />
         </div>
 
         <div>
-            <label for="max_age_preference" class="block text-sm font-medium text-gray-700">Maximum age</label>
-            <input id="max_age_preference" type="number" name="max_age_preference"
-                   value="{{ old('max_age_preference', $user->max_age_preference) }}" required
-                   min="18" max="99"
-                   class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-            @error('max_age_preference', 'updateProfileInformation')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
+            <x-label for="max_age_preference">Maximum age</x-label>
+            <x-input type="number" name="max_age_preference"
+                   :value="old('max_age_preference', $user->max_age_preference)" required
+                   min="18" max="99" />
+            <x-form-error field="max_age_preference" bag="updateProfileInformation" />
         </div>
     </div>
 
@@ -137,18 +105,16 @@
         <input type="hidden" name="flexible_on_age" value="0">
         <input id="flexible_on_age" type="checkbox" name="flexible_on_age" value="1"
                @checked(old('flexible_on_age', $user->flexible_on_age))
-               class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+               class="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
         <label for="flexible_on_age" class="text-sm text-gray-700">Show me people slightly outside my age range</label>
-        @error('flexible_on_age', 'updateProfileInformation')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-        @enderror
+        <x-form-error field="flexible_on_age" bag="updateProfileInformation" />
     </div>
 
     {{-- Interests --}}
     @if(isset($interestCategories) && $interestCategories->isNotEmpty())
         @php $selectedInterests = old('interests', $user->interestIds()); @endphp
         <div>
-            <label class="block text-sm font-medium text-gray-700">Interests</label>
+            <x-label>Interests</x-label>
             <p class="mt-1 text-xs text-gray-500">Pick the things you're into &mdash; they help us find better matches.</p>
 
             <div class="mt-3 space-y-5">
@@ -164,7 +130,7 @@
                                     <input type="checkbox" name="interests[]" value="{{ $interest->id }}"
                                            @checked(in_array($interest->id, $selectedInterests))
                                            class="peer sr-only">
-                                    <span class="inline-flex items-center gap-1.5 rounded-full border border-gray-300 px-3 py-1 text-sm text-gray-700 transition peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 peer-focus-visible:ring-2 peer-focus-visible:ring-indigo-500">
+                                    <span class="inline-flex items-center gap-1.5 rounded-full border border-gray-300 px-3 py-1 text-sm text-gray-700 transition peer-checked:border-brand-500 peer-checked:bg-brand-50 peer-checked:text-brand-700 peer-focus-visible:ring-2 peer-focus-visible:ring-brand-500">
                                         @if($interest->icon)<span>{{ $interest->icon }}</span>@endif
                                         {{ $interest->label }}
                                     </span>
@@ -175,19 +141,12 @@
                 @endforeach
             </div>
 
-            @error('interests', 'updateProfileInformation')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
-            @error('interests.*', 'updateProfileInformation')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
+            <x-form-error field="interests" bag="updateProfileInformation" />
+            <x-form-error field="interests.*" bag="updateProfileInformation" />
         </div>
     @endif
 
     <div class="flex items-center justify-end gap-3 border-t border-gray-100 pt-6">
-        <button type="submit"
-                class="px-4 py-2 bg-gray-800 text-white text-sm font-medium rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-            Save
-        </button>
+        <x-button type="submit">Save</x-button>
     </div>
 </form>

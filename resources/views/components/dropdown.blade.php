@@ -45,7 +45,7 @@
         :aria-expanded="open"
         aria-haspopup="listbox"
         id="{{ $id }}"
-        class="mt-1 flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-left text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
+        class="mt-1 flex w-full items-center justify-between rounded-input border border-gray-300 bg-white px-3 py-2 text-left text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
     >
         <span class="block truncate" :class="hasSelection ? 'text-gray-900' : 'text-gray-400'" x-text="displayValue"></span>
         <x-heroicon-m-chevron-down class="ml-2 h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200" x-bind:class="open && 'rotate-180'" />
@@ -62,7 +62,7 @@
         x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95"
         x-cloak
-        class="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white shadow-lg ring-1 ring-black/5"
+        class="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-dropdown bg-white shadow-dropdown ring-1 ring-black/5"
     >
         {{-- Search input --}}
         @if($searchable)
@@ -75,7 +75,7 @@
                     x-on:keydown.arrow-up.prevent="highlightPrev()"
                     x-on:keydown.enter.prevent="selectHighlighted()"
                     placeholder="Search..."
-                    class="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    class="w-full rounded-input border border-gray-300 px-3 py-1.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200"
                 >
             </div>
         @endif
@@ -87,7 +87,7 @@
                     role="option"
                     :aria-selected="isSelected(option)"
                     :class="{
-                        'bg-indigo-600 text-white': highlightedIndex === index,
+                        'bg-brand-600 text-white': highlightedIndex === index,
                         'text-gray-900': highlightedIndex !== index,
                     }"
                     x-on:click="select(option)"
@@ -99,7 +99,7 @@
                     <span
                         x-show="isSelected(option)"
                         class="absolute inset-y-0 right-0 flex items-center pr-3"
-                        :class="highlightedIndex === index ? 'text-white' : 'text-indigo-600'"
+                        :class="highlightedIndex === index ? 'text-white' : 'text-brand-600'"
                     >
                         <x-heroicon-m-check class="h-4 w-4" />
                     </span>

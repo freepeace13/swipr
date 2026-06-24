@@ -8,4 +8,40 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Brand colors (indigo family) */
+    --color-brand-50: oklch(96.2% .018 272.314);
+    --color-brand-100: oklch(93% .034 272.788);
+    --color-brand-200: oklch(87% .065 274.039);
+    --color-brand-300: oklch(78.5% .115 274.713);
+    --color-brand-400: oklch(67.3% .182 276.935);
+    --color-brand-500: oklch(58.5% .233 277.117);
+    --color-brand-600: oklch(51.1% .262 276.966);
+    --color-brand-700: oklch(45.7% .24 277.023);
+    --color-brand-800: oklch(39.8% .195 277.366);
+    --color-brand-900: oklch(35.9% .144 278.697);
+
+    /* Accent colors (purple family) */
+    --color-accent-500: oklch(62.7% .265 303.9);
+    --color-accent-600: oklch(55.8% .288 302.321);
+
+    /* Standardized radii */
+    --radius-card: 1rem;
+    --radius-button: 0.5rem;
+    --radius-input: 0.5rem;
+    --radius-dropdown: 0.75rem;
+    --radius-bubble: 1rem;
+
+    /* Standardized shadows */
+    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.08);
+    --shadow-dropdown: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-button: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+@utility brand-gradient {
+    background-image: linear-gradient(to right, var(--color-brand-500), var(--color-accent-600));
+}
+
+@utility brand-gradient-diagonal {
+    background-image: linear-gradient(to bottom right, var(--color-brand-500), var(--color-accent-600));
 }

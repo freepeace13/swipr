@@ -2,18 +2,18 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex items-center">
-                <a href="{{ route('feeds') }}" class="text-xl font-semibold text-gray-800">
+                <a href="{{ route('feeds') }}" class="bg-gradient-to-r from-brand-500 to-accent-600 bg-clip-text text-xl font-bold text-transparent">
                     {{ config('app.name', 'Swipr') }}
                 </a>
             </div>
 
             <div class="hidden sm:flex sm:items-center gap-4">
                 @auth
-                    <a href="{{ route('feeds') }}" class="flex items-center gap-1.5 text-sm font-medium {{ request()->routeIs('feeds') ? 'text-gray-900' : 'text-gray-500 hover:text-gray-700' }}">
+                    <a href="{{ route('feeds') }}" class="flex items-center gap-1.5 text-sm font-medium {{ request()->routeIs('feeds') ? 'text-brand-600' : 'text-gray-500 hover:text-gray-700' }}">
                         <x-heroicon-o-squares-2x2 class="h-5 w-5" />
                         Feeds
                     </a>
-                    <a href="{{ route('chat.inbox') }}" class="flex items-center gap-1.5 text-sm font-medium {{ request()->routeIs('chat.inbox', 'chat.conversations.*') ? 'text-gray-900' : 'text-gray-500 hover:text-gray-700' }}">
+                    <a href="{{ route('chat.inbox') }}" class="flex items-center gap-1.5 text-sm font-medium {{ request()->routeIs('chat.inbox', 'chat.conversations.*') ? 'text-brand-600' : 'text-gray-500 hover:text-gray-700' }}">
                         <x-heroicon-o-envelope class="h-5 w-5" />
                         Inbox
                     </a>
@@ -24,13 +24,13 @@
                             <x-heroicon-m-chevron-down class="h-4 w-4" />
                         </button>
 
-                        <div x-show="userMenu" x-transition class="absolute right-0 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5" style="display: none;">
-                            <a href="{{ route('profile.show', ['user' => $auth]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
-                            <a href="{{ route('settings') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                        <div x-show="userMenu" x-transition class="absolute right-0 mt-2 w-48 rounded-dropdown bg-white py-1 shadow-dropdown ring-1 ring-black/5" style="display: none;">
+                            <a href="{{ route('profile.show', ['user' => $auth]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Profile</a>
+                            <a href="{{ route('settings') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Settings</a>
                             <hr class="my-1 border-gray-200">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button type="submit" class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">
+                                <button type="submit" class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50">
                                     Log Out
                                 </button>
                             </form>
@@ -46,14 +46,14 @@
 
             <div class="flex items-center gap-3 sm:hidden">
                 @auth
-                    <a href="{{ route('feeds') }}" class="p-2 rounded-md {{ request()->routeIs('feeds') ? 'text-gray-900' : 'text-gray-400 hover:text-gray-500' }}">
+                    <a href="{{ route('feeds') }}" class="p-2 rounded-button {{ request()->routeIs('feeds') ? 'text-brand-600' : 'text-gray-400 hover:text-gray-500' }}">
                         <x-heroicon-o-squares-2x2 class="h-6 w-6" />
                     </a>
-                    <a href="{{ route('chat.inbox') }}" class="p-2 rounded-md {{ request()->routeIs('chat.inbox', 'chat.conversations.*') ? 'text-gray-900' : 'text-gray-400 hover:text-gray-500' }}">
+                    <a href="{{ route('chat.inbox') }}" class="p-2 rounded-button {{ request()->routeIs('chat.inbox', 'chat.conversations.*') ? 'text-brand-600' : 'text-gray-400 hover:text-gray-500' }}">
                         <x-heroicon-o-envelope class="h-6 w-6" />
                     </a>
                 @endauth
-                <button @click="open = !open" class="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100">
+                <button @click="open = !open" class="p-2 rounded-button text-gray-400 hover:text-gray-500 hover:bg-gray-100">
                     <x-heroicon-o-bars-3 x-show="!open" class="h-6 w-6" />
                     <x-heroicon-o-x-mark x-show="open" class="h-6 w-6" style="display: none;" />
                 </button>

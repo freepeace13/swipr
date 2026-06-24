@@ -22,8 +22,8 @@
                         @foreach ($links as $key => $label)
                             <a href="{{ route('settings', ['tab' => $key]) }}"
                                @class([
-                                   'block rounded-md px-3 py-2 text-sm font-medium',
-                                   'bg-gray-100 text-gray-900' => $tab === $key,
+                                   'block rounded-button px-3 py-2 text-sm font-medium',
+                                   'bg-brand-50 text-brand-700' => $tab === $key,
                                    'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => $tab !== $key,
                                ])
                                aria-current="{{ $tab === $key ? 'page' : 'false' }}">
@@ -35,21 +35,19 @@
 
                 {{-- Content --}}
                 <div class="min-w-0 flex-1">
-                    <div class="overflow-hidden bg-white shadow">
-                        <div class="p-6 sm:p-8">
-                            @if ($tab === 'account')
-                                <h3 class="text-lg font-medium text-gray-900">Update Password</h3>
-                                <p class="mt-1 text-sm text-gray-600">Ensure your account is using a long, random password to stay secure.</p>
+                    <x-card>
+                        @if ($tab === 'account')
+                            <h3 class="text-lg font-medium text-gray-900">Update Password</h3>
+                            <p class="mt-1 text-sm text-gray-600">Ensure your account is using a long, random password to stay secure.</p>
 
-                                @include('pages.settings.partials.update-password-form')
-                            @else
-                                <h3 class="text-lg font-medium text-gray-900">Profile Information</h3>
-                                <p class="mt-1 text-sm text-gray-600">Update your profile information and matchmaking preferences.</p>
+                            @include('pages.settings.partials.update-password-form')
+                        @else
+                            <h3 class="text-lg font-medium text-gray-900">Profile Information</h3>
+                            <p class="mt-1 text-sm text-gray-600">Update your profile information and matchmaking preferences.</p>
 
-                                @include('pages.profile.partials.update-profile-information-form', ['user' => $auth, 'interestCategories' => $interestCategories])
-                            @endif
-                        </div>
-                    </div>
+                            @include('pages.profile.partials.update-profile-information-form', ['user' => $auth, 'interestCategories' => $interestCategories])
+                        @endif
+                    </x-card>
                 </div>
             </div>
         </div>

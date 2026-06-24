@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="mx-auto h-full max-w-7xl sm:px-6 lg:px-8 my-6">
-        <div class="flex h-full flex-col bg-white sm:h-auto sm:shadow">
+        <x-card :padding="false" class="flex h-full flex-col sm:h-auto">
             {{-- Header --}}
             <div class="flex items-center justify-between border-b border-gray-100 px-4 py-4 sm:px-6">
                 <h1 class="text-lg font-semibold text-gray-900">Messages</h1>
@@ -12,13 +12,7 @@
 
             {{-- Conversations List --}}
             @if ($conversations->isEmpty())
-                <div class="flex flex-1 flex-col items-center justify-center px-4 py-16 text-center">
-                    <div class="mb-4 rounded-full bg-indigo-50 p-4">
-                        <x-heroicon-o-envelope class="h-8 w-8 text-indigo-400" />
-                    </div>
-                    <p class="text-sm font-medium text-gray-900">No conversations yet</p>
-                    <p class="mt-1 text-xs text-gray-500">When you match with someone, your conversations will appear here</p>
-                </div>
+                <x-empty-state icon="envelope" title="No conversations yet" description="When you match with someone, your conversations will appear here" class="flex-1" />
             @else
                 <div class="min-h-0 flex-1 divide-y divide-gray-100 overflow-y-auto">
                     @foreach ($conversations as $conversation)
@@ -32,23 +26,14 @@
                             class="group flex items-center gap-3 px-4 py-3 transition hover:bg-gray-50 sm:px-6"
                         >
                             {{-- Avatar --}}
-                            <div class="relative flex-shrink-0">
-                                <img
-                                    src="{{ $other->avatar }}"
-                                    alt="{{ $other->name }}"
-                                    class="h-12 w-12 rounded-full object-cover ring-2 ring-gray-100"
-                                >
-                                @if ($isOnline)
-                                    <span class="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-green-500"></span>
-                                @endif
-                            </div>
+                            <x-avatar :src="$other->avatar" :alt="$other->name" size="md" ring :online="$isOnline" />
 
                             {{-- Content --}}
                             <div class="min-w-0 flex-1">
                                 <div class="flex items-baseline justify-between gap-2">
                                     <h3 class="truncate text-sm font-semibold text-gray-900">{{ $other->name }}</h3>
                                     @if ($lastMessage)
-                                        <span class="flex-shrink-0 text-[11px] text-gray-400">
+                                        <span class="flex-shrink-0 text-xs text-gray-400">
                                             @if ($lastMessage->created_at->isToday())
                                                 {{ $lastMessage->created_at->format('g:i A') }}
                                             @elseif ($lastMessage->created_at->isYesterday())
@@ -97,6 +82,6 @@
                     </div>
                 @endif
             @endif
-        </div>
+        </x-card>
     </div>
 @endsection

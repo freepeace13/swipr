@@ -31,18 +31,14 @@
             </a>
 
             <a href="{{ route('profile.show', $other) }}" class="flex-shrink-0">
-                <img
-                    src="{{ $other->avatar }}"
-                    alt="{{ $other->name }}"
-                    class="h-10 w-10 rounded-full object-cover ring-2 ring-gray-100"
-                >
+                <x-avatar :src="$other->avatar" :alt="$other->name" size="sm" ring />
             </a>
 
             <div class="min-w-0 flex-1">
-                <a href="{{ route('profile.show', $other) }}" class="block truncate text-sfom nt-semibold text-gray-900 hover:underline">
+                <a href="{{ route('profile.show', $other) }}" class="block truncate text-sm font-semibold text-gray-900 hover:underline">
                     {{ $other->name }}
                 </a>
-                <p x-show="othersTyping" x-cloak class="text-xs text-indigo-600">typing…</p>
+                <p x-show="othersTyping" x-cloak class="text-xs text-brand-600">typing…</p>
                 <template x-if="!othersTyping">
                     <span>
                         @if ($other->last_seen_at?->isToday())
@@ -67,7 +63,7 @@
                     x-transition:leave="transition ease-in duration-75"
                     x-transition:leave-start="opacity-100 scale-100"
                     x-transition:leave-end="opacity-0 scale-95"
-                    class="absolute right-0 top-full z-10 mt-1 w-48 rounded-lg bg-white py-1 shadow-lg ring-1 ring-black/5"
+                    class="absolute right-0 top-full z-10 mt-1 w-48 rounded-dropdown bg-white py-1 shadow-dropdown ring-1 ring-black/5"
                 >
                     <a href="{{ route('profile.show', $other) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">View Profile</a>
                     <form method="POST" action="{{ route('chat.conversations.destroy', $conversation) }}">
@@ -89,8 +85,8 @@
                 class="flex h-full flex-col items-center justify-center text-center"
                 @if (!$messages->isEmpty()) style="display:none" @endif
             >
-                <div class="mb-4 rounded-full bg-indigo-50 p-4">
-                    <x-heroicon-o-chat-bubble-oval-left-ellipsis class="h-8 w-8 text-indigo-400" />
+                <div class="mb-4 rounded-full bg-brand-50 p-4">
+                    <x-heroicon-o-chat-bubble-oval-left-ellipsis class="h-8 w-8 text-brand-400" />
                 </div>
                 <p class="text-sm font-medium text-gray-900">No messages yet</p>
                 <p class="mt-1 text-xs text-gray-500">Send a message to start the conversation</p>
@@ -128,7 +124,7 @@
                                     <x-heroicon-m-trash class="h-4 w-4" />
                                 </button>
                             @endif
-                            <div class="{{ $isMine ? 'bg-indigo-600 text-white rounded-2xl rounded-br-md' : 'bg-white text-gray-900 rounded-2xl rounded-bl-md shadow-sm ring-1 ring-gray-100' }} px-4 py-2.5">
+                            <div class="{{ $isMine ? 'bg-brand-600 text-white rounded-bubble rounded-br-md' : 'bg-white text-gray-900 rounded-bubble rounded-bl-md shadow-sm ring-1 ring-gray-100' }} px-4 py-2.5">
                                 @if ($message->type === \App\Enums\Chat\MessageType::Image && $message->attachments)
                                     <div class="mb-1.5 overflow-hidden rounded-lg">
                                         @foreach ($message->attachments as $attachment)
@@ -139,12 +135,12 @@
 
                                 @if ($message->type === \App\Enums\Chat\MessageType::File && $message->attachments)
                                     @foreach ($message->attachments as $attachment)
-                                        <a href="{{ $attachment['url'] }}" target="_blank" class="mb-1.5 flex items-center gap-2 rounded-lg {{ $isMine ? 'bg-indigo-700/50' : 'bg-gray-50' }} px-3 py-2">
-                                            <x-heroicon-o-document class="h-5 w-5 flex-shrink-0 {{ $isMine ? 'text-indigo-200' : 'text-gray-400' }}" />
+                                        <a href="{{ $attachment['url'] }}" target="_blank" class="mb-1.5 flex items-center gap-2 rounded-lg {{ $isMine ? 'bg-brand-700/50' : 'bg-gray-50' }} px-3 py-2">
+                                            <x-heroicon-o-document class="h-5 w-5 flex-shrink-0 {{ $isMine ? 'text-brand-200' : 'text-gray-400' }}" />
                                             <div class="min-w-0 flex-1">
                                                 <p class="truncate text-sm font-medium {{ $isMine ? 'text-white' : 'text-gray-900' }}">{{ $attachment['name'] ?? 'File' }}</p>
                                                 @if (isset($attachment['size']))
-                                                    <p class="text-xs {{ $isMine ? 'text-indigo-200' : 'text-gray-500' }}">{{ number_format($attachment['size'] / 1024, 1) }} KB</p>
+                                                    <p class="text-xs {{ $isMine ? 'text-brand-200' : 'text-gray-500' }}">{{ number_format($attachment['size'] / 1024, 1) }} KB</p>
                                                 @endif
                                             </div>
                                         </a>
@@ -158,14 +154,14 @@
 
                             {{-- Timestamp --}}
                             <div class="mt-0.5 flex items-center gap-1 px-1 {{ $isMine ? 'justify-end' : 'justify-start' }}">
-                                <span class="text-[11px] text-gray-400">{{ $message->created_at->format('g:i A') }}</span>
+                                <span class="text-xs text-gray-400">{{ $message->created_at->format('g:i A') }}</span>
                                 @if ($isMine)
                                     @php
                                         $status = $message->status->first();
                                     @endphp
                                     <span data-status-icon class="inline-flex">
                                         @if ($status?->read_at)
-                                            <x-heroicon-m-check class="h-3.5 w-3.5 text-indigo-500" />
+                                            <x-heroicon-m-check class="h-3.5 w-3.5 text-brand-500" />
                                         @elseif ($status?->delivered_at)
                                             <x-heroicon-m-check class="h-3.5 w-3.5 text-gray-400" />
                                         @else
@@ -192,14 +188,14 @@
                         :rows="rows"
                         :disabled="sending"
                         placeholder="Type a message..."
-                        class="block w-full resize-none rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 transition focus:border-indigo-300 focus:bg-white focus:ring-2 focus:ring-indigo-100"
+                        class="block w-full resize-none rounded-input border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 transition focus:border-brand-300 focus:bg-white focus:ring-2 focus:ring-brand-100"
                     ></textarea>
                 </div>
 
                 <button
                     type="submit"
                     :disabled="!body.trim() || sending"
-                    class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-indigo-600 text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40"
+                    class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-brand-600 text-white shadow-button transition hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40"
                 >
                     <x-heroicon-o-paper-airplane class="h-5 w-5" />
                 </button>
@@ -214,11 +210,11 @@
                 <button type="button" data-delete class="absolute -left-7 top-1/2 hidden -translate-y-1/2 rounded-full p-1 text-gray-300 transition hover:text-red-500 group-hover:block" title="Delete message">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
                 </button>
-                <div class="bg-indigo-600 text-white rounded-2xl rounded-br-md px-4 py-2.5">
+                <div class="bg-brand-600 text-white rounded-bubble rounded-br-md px-4 py-2.5">
                     <p data-body class="whitespace-pre-wrap break-words text-sm leading-relaxed"></p>
                 </div>
                 <div class="mt-0.5 flex items-center gap-1 px-1 justify-end">
-                    <span data-time class="text-[11px] text-gray-400"></span>
+                    <span data-time class="text-xs text-gray-400"></span>
                     <span data-status-icon class="inline-flex">
                         <svg class="h-3.5 w-3.5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -233,11 +229,11 @@
     <template id="received-message-template">
         <div class="flex justify-start" data-message-id>
             <div class="group relative max-w-[75%] sm:max-w-[65%]">
-                <div class="bg-white text-gray-900 rounded-2xl rounded-bl-md shadow-sm ring-1 ring-gray-100 px-4 py-2.5">
+                <div class="bg-white text-gray-900 rounded-bubble rounded-bl-md shadow-sm ring-1 ring-gray-100 px-4 py-2.5">
                     <p data-body class="whitespace-pre-wrap break-words text-sm leading-relaxed"></p>
                 </div>
                 <div class="mt-0.5 flex items-center gap-1 px-1 justify-start">
-                    <span data-time class="text-[11px] text-gray-400"></span>
+                    <span data-time class="text-xs text-gray-400"></span>
                 </div>
             </div>
         </div>

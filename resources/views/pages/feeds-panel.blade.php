@@ -1,7 +1,7 @@
 @foreach($matches as $match)
     <div class="feed-panel relative overflow-hidden">
         @if(str_starts_with($match->avatar, 'data:image/svg'))
-            <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600">
+            <div class="absolute inset-0 brand-gradient-diagonal">
                 <img
                     src="{{ $match->avatar }}"
                     alt="{{ $match->name }}"
@@ -33,12 +33,12 @@
                     @if($match->interests->isNotEmpty())
                         <div class="mt-3 flex flex-wrap gap-1.5">
                             @foreach($match->interests->take(3) as $interest)
-                                <span class="inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-medium text-white backdrop-blur-sm">
+                                <x-badge variant="overlay">
                                     @if($interest->icon)
                                         <span>{{ $interest->icon }}</span>
                                     @endif
                                     {{ $interest->label }}
-                                </span>
+                                </x-badge>
                             @endforeach
                         </div>
                     @endif

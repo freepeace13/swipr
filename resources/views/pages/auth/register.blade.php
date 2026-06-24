@@ -7,62 +7,45 @@
         @csrf
 
         <div>
-            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-            <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus
-                   class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-            @error('name')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
+            <x-label for="name">Name</x-label>
+            <x-input name="name" :value="old('name')" required autofocus />
+            <x-form-error field="name" />
         </div>
 
         <div class="mt-4">
-            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-            <input id="email" type="email" name="email" value="{{ old('email') }}" required
-                   class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-            @error('email')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
+            <x-label for="email">Email</x-label>
+            <x-input type="email" name="email" :value="old('email')" required />
+            <x-form-error field="email" />
         </div>
 
         <div class="mt-4">
-            <label for="birthdate" class="block text-sm font-medium text-gray-700">Date of Birth</label>
-            <input id="birthdate" type="date" name="birthdate" value="{{ old('birthdate') }}" required
-                   max="{{ now()->subYears(18)->toDateString() }}"
-                   class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-            @error('birthdate')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
+            <x-label for="birthdate">Date of Birth</x-label>
+            <x-input type="date" name="birthdate" :value="old('birthdate')" required :max="now()->subYears(18)->toDateString()" />
+            <x-form-error field="birthdate" />
         </div>
 
         <div class="mt-4">
-            <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
-            <select id="gender" name="gender" required
-                    class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+            <x-label for="gender">Gender</x-label>
+            <x-select-input name="gender" required>
                 <option value="">Select gender</option>
                 @foreach(\App\Enums\Gender::toSelectOptions() as $option)
                     <option value="{{ $option['value'] }}" @selected(old('gender') === $option['value'])>
                         {{ $option['label'] }}
                     </option>
                 @endforeach
-            </select>
-            @error('gender')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
+            </x-select-input>
+            <x-form-error field="gender" />
         </div>
 
         <div class="mt-4">
-            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-            <input id="password" type="password" name="password" required
-                   class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-            @error('password')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
+            <x-label for="password">Password</x-label>
+            <x-input type="password" name="password" required />
+            <x-form-error field="password" />
         </div>
 
         <div class="mt-4">
-            <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-            <input id="password_confirmation" type="password" name="password_confirmation" required
-                   class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+            <x-label for="password_confirmation">Confirm Password</x-label>
+            <x-input type="password" name="password_confirmation" required />
         </div>
 
         <div class="mt-4 flex items-center justify-between">
@@ -70,10 +53,7 @@
                 Already registered?
             </a>
 
-            <button type="submit"
-                    class="px-4 py-2 bg-gray-800 text-white text-sm font-medium rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                Register
-            </button>
+            <x-button type="submit">Register</x-button>
         </div>
     </form>
 @endsection
